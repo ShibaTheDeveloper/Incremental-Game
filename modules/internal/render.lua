@@ -1,4 +1,5 @@
 local Module = {}
+Module.fullscreen = false
 Module._imageCache = {}
 Module._elements = {}
 
@@ -13,18 +14,24 @@ end
 
 local Element = {
     type = "sprite",
-    tableIndex = 0,
     zIndex = 0,
+
+    anchorX = .5,
+    anchorY = .5,
 
     offsetX = 0,
     offsetY = 0,
+
     scaleX = 1,
     scaleY = 1,
+
     x = 0,
     y = 0,
 
     color = Module:createColor(255, 255, 255, 1),
     rotation = 0,
+
+    flip = false
 }
 Element.__index = Element
 
@@ -37,18 +44,25 @@ function Element:remove()
     end
 end
 
-function Element:draw(windowScaleFactor, baseWindowWidth, baseWindowHeight, currentWindowWidth, currentWindowHeight)
-    local windowOffsetX = (currentWindowWidth - baseWindowWidth * windowScaleFactor) / 2
-    local windowOffsetY = (currentWindowHeight - baseWindowHeight * windowScaleFactor) / 2
+function Element:draw(windowScaleFactor, windowOffsetX, windowOffsetY)
+    local x = self.x * windowScaleFactor + windowOffsetX + (self.offsetX or 0)
+    local y = self.y * windowScaleFactor + windowOffsetY + (self.offsetY or 0)
 
-    local x = self.x * windowScaleFactor + windowOffsetX
-    local y = self.y * windowScaleFactor + windowOffsetY
-    local scaleX = self.scaleX * windowScaleFactor
+    local scaleX = self.scaleX * (self.flip and -1 or 1) * windowScaleFactor
     local scaleY = self.scaleY * windowScaleFactor
-    local offsetX = self.offsetX
-    local offsetY = self.offsetY
 
-    local rotation = self.rotation
+    local rotation = math.rad(self.rotation * (self.flip and -1 or 1))
+
+    local offsetX, offsetY = 0, 0
+
+    if self.type == "sprite" and self.drawable then
+        offsetX = self.drawable:getWidth() * self.anchorX
+        offsetY = self.drawable:getHeight() * self.anchorY
+    elseif self.type == "text" and self.text then
+        local font = love.graphics.getFont()
+        offsetX = font:getWidth(self.text) * self.anchorX
+        offsetY = font:getHeight() * self.anchorY
+    end
 
     local color = self.color or Module:createColor()
     love.graphics.setColor(color.r / 255, color.g / 255, color.b / 255, color.alpha)
@@ -61,15 +75,14 @@ function Module:createElement(type, data)
     if (type ~= "text") and (type ~= "sprite") then return end
 
     local element = setmetatable(data or {}, Element)
-
     table.insert(self._elements, element)
-    element.color = Module:createColor()
-    element.tableIndex = #self._elements
+
+    element.color = data.color or Module:createColor()
     element.type = type
 
     if type == "sprite" then
         if not (data.spritePath and love.filesystem.getInfo(data.spritePath)) then
-            data.spritePath = "assets/sprites/debug_missing.png"
+            data.spritePath = "assets/sprites/missing.png"
         end
 
         if not Module._imageCache[data.spritePath] then
@@ -83,13 +96,29 @@ function Module:createElement(type, data)
     return element
 end
 
+function Module:physicalToVirtual(x, y)
+    local currentWindowWidth, currentWindowHeight = love.graphics.getDimensions()
+    local baseWindowWidth, baseWindowHeight = _G.windowWidth, _G.windowHeight
+
+    local windowScaleX = currentWindowWidth / baseWindowWidth
+    local windowScaleY = currentWindowHeight / baseWindowHeight
+    local windowScale = math.min(windowScaleX, windowScaleY)
+
+    local offsetX = (currentWindowWidth - baseWindowWidth * windowScale) / 2
+    local offsetY = (currentWindowHeight - baseWindowHeight * windowScale) / 2
+
+    local virtualX = (x - offsetX) / windowScale
+    local virtualY = (y - offsetY) / windowScale
+
+    virtualX = math.max(0, math.min(baseWindowWidth, virtualX))
+    virtualY = math.max(0, math.min(baseWindowHeight, virtualY))
+
+    return virtualX, virtualY
+end
+
 function Module:drawAll()
     table.sort(self._elements, function(a, b)
-        if a.zIndex == b.zIndex then
-            return a.tableIndex > b.tableIndex
-        else
-            return a.zIndex < b.zIndex
-        end
+        return a.zIndex < b.zIndex
     end)
 
     local currentWindowWidth, currentWindowHeight = love.graphics.getDimensions()
@@ -99,8 +128,13 @@ function Module:drawAll()
     local windowScaleFactorY = currentWindowHeight / baseWindowHeight
     local windowScaleFactor = math.min(windowScaleFactorX, windowScaleFactorY)
 
+    local windowOffsetX = (currentWindowWidth - baseWindowWidth * windowScaleFactor) / 2
+    local windowOffsetY = (currentWindowHeight - baseWindowHeight * windowScaleFactor) / 2
+
+    love.graphics.setScissor(windowOffsetX, windowOffsetY, baseWindowWidth * windowScaleFactor, baseWindowHeight * windowScaleFactor)
+
     for _, element in ipairs(self._elements) do
-        element:draw(windowScaleFactor, baseWindowWidth, baseWindowHeight, currentWindowWidth, currentWindowHeight)
+        element:draw(windowScaleFactor, windowOffsetX, windowOffsetY)
     end
 end
 

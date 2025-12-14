@@ -11,7 +11,7 @@ function love.conf(config)
     config.window.minwidth = _G.minWindowWidth
     config.window.minheight = _G.minWindowHeight
 
-    config.window.icon = "assets/sprites/debug_missing.png"
+    config.window.icon = "assets/sprites/wooden_pickaxe.png"
     config.window.title = "Incremental Game"
 
     config.window.fullscreentype = "desktop"
