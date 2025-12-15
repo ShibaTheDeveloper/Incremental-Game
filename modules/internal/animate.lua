@@ -1,6 +1,6 @@
 local Module = {}
 
-function Module.lerpNum(a, b, lerpFactor)
+function Module.lerp(a, b, lerpFactor)
     return a + (b - a) * lerpFactor
 end
 

@@ -5,9 +5,9 @@ Module._elements = {}
 
 function Module:createColor(r, g, b, alpha)
     return {
-        r = r or 255,
-        g = g or 255,
-        b = b or 255,
+        r = (r or 255) / 255,
+        g = (g or 255) / 255,
+        b = (b or 255)  / 255,
         alpha = alpha or 1
     }
 end
@@ -28,7 +28,7 @@ local Element = {
     x = 0,
     y = 0,
 
-    color = Module:createColor(255, 255, 255, 1),
+    color = Module:createColor(255, 255, 255),
     rotation = 0,
 
     flip = false
@@ -65,7 +65,7 @@ function Element:draw(windowScaleFactor, windowOffsetX, windowOffsetY)
     end
 
     local color = self.color or Module:createColor()
-    love.graphics.setColor(color.r / 255, color.g / 255, color.b / 255, color.alpha)
+    love.graphics.setColor(color.r, color.g, color.b, color.alpha)
 
     if self.type == "sprite" then love.graphics.draw(self.drawable, x, y, rotation, scaleX, scaleY, offsetX, offsetY)
     else love.graphics.print(self.text, x, y, rotation, scaleX, scaleY, offsetX, offsetY) end
@@ -96,7 +96,7 @@ function Module:createElement(type, data)
     return element
 end
 
-function Module:physicalToVirtual(x, y)
+function Module:getScaledDimensions(x, y)
     local currentWindowWidth, currentWindowHeight = love.graphics.getDimensions()
     local baseWindowWidth, baseWindowHeight = _G.windowWidth, _G.windowHeight
 
@@ -133,7 +133,7 @@ function Module:drawAll()
 
     love.graphics.setScissor(windowOffsetX, windowOffsetY, baseWindowWidth * windowScaleFactor, baseWindowHeight * windowScaleFactor)
 
-    for _, element in ipairs(self._elements) do
+    for _, element in pairs(self._elements) do
         element:draw(windowScaleFactor, windowOffsetX, windowOffsetY)
     end
 end
