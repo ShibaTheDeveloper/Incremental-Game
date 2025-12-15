@@ -1,4 +1,4 @@
-local RenderModule = require("modules.internal.render")
+local RenderModule = require("modules.engine.render")
 
 function love.draw()
     RenderModule:drawAll()

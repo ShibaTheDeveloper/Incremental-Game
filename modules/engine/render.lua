@@ -1,3 +1,6 @@
+local IdManagerModule = require("modules.engine.id_manager")
+local idManager = IdManagerModule:createManager()
+
 local Module = {}
 Module.fullscreen = false
 Module._imageCache = {}
@@ -13,6 +16,8 @@ function Module:createColor(r, g, b, alpha)
 end
 
 local Element = {
+    id = 0,
+
     type = "sprite",
     zIndex = 0,
 
@@ -36,12 +41,10 @@ local Element = {
 Element.__index = Element
 
 function Element:remove()
-    for index, value in ipairs(Module._elements) do
-        if value == self then
-            table.remove(Module._elements, index)
-            break
-        end
-    end
+    local id = self.id
+
+    Module._elements[id] = nil
+    idManager:release(id)
 end
 
 function Element:draw(windowScaleFactor, windowOffsetX, windowOffsetY)
@@ -71,16 +74,36 @@ function Element:draw(windowScaleFactor, windowOffsetX, windowOffsetY)
     else love.graphics.print(self.text, x, y, rotation, scaleX, scaleY, offsetX, offsetY) end
 end
 
-function Module:createElement(type, data)
-    if (type ~= "text") and (type ~= "sprite") then return end
+function Module:createElement(data)
+    if (data.type ~= "text") and (data.type ~= "sprite") then return end
 
-    local element = setmetatable(data or {}, Element)
-    table.insert(self._elements, element)
+    local element = setmetatable({
+        id = idManager:get(),
 
-    element.color = data.color or Module:createColor()
-    element.type = type
+        type = data.type or "sprite",
+        zIndex = data.zIndex or 0,
 
-    if type == "sprite" then
+        anchorX = data.anchorX or .5,
+        anchorY = data.anchorY or .5,
+
+        offsetX = data.offsetX or 0,
+        offsetY = data.offsetY or 0,
+
+        scaleX = data.scaleX or 1,
+        scaleY = data.scaleY or 1,
+
+        x = data.x or 0,
+        y = data.y or 0,
+
+        color = data.color or Module:createColor(),
+        rotation = data.rotation or  0,
+
+        flip = false
+    }, Element)
+
+    self._elements[element.id] = element
+
+    if data.type == "sprite" then
         if not (data.spritePath and love.filesystem.getInfo(data.spritePath)) then
             data.spritePath = "assets/sprites/missing.png"
         end
@@ -116,9 +139,13 @@ function Module:getScaledDimensions(x, y)
     return virtualX, virtualY
 end
 
+local function getSortOrder(element)
+    return element.zIndex + ((element.id / 1000) % 1)
+end
+
 function Module:drawAll()
-    table.sort(self._elements, function(a, b)
-        return a.zIndex < b.zIndex
+    table.sort(self._elements, function(elementA, elementB)
+        return getSortOrder(elementA) < getSortOrder(elementB)
     end)
 
     local currentWindowWidth, currentWindowHeight = love.graphics.getDimensions()
@@ -131,10 +158,11 @@ function Module:drawAll()
     local windowOffsetX = (currentWindowWidth - baseWindowWidth * windowScaleFactor) / 2
     local windowOffsetY = (currentWindowHeight - baseWindowHeight * windowScaleFactor) / 2
 
-    love.graphics.setScissor(windowOffsetX, windowOffsetY, baseWindowWidth * windowScaleFactor, baseWindowHeight * windowScaleFactor)
-
     for _, element in pairs(self._elements) do
+        love.graphics.setScissor(windowOffsetX, windowOffsetY, baseWindowWidth * windowScaleFactor, baseWindowHeight * windowScaleFactor)
         element:draw(windowScaleFactor, windowOffsetX, windowOffsetY)
+
+        love.graphics.setScissor()
     end
 end
 
