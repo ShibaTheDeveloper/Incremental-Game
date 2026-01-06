@@ -47,6 +47,28 @@ function Element:remove()
     manager:release(id)
 end
 
+function Module:isPointInsideElement(x, y, element)
+    if not element then return false end
+
+    local width, height = 0, 0
+
+    if element.type == "sprite" and element.drawable then
+        width = element.drawable:getWidth() * element.scaleX
+        height = element.drawable:getHeight() * element.scaleY
+    elseif element.type == "text" and element.text then
+        local font = love.graphics.getFont()
+        width = font:getWidth(element.text) * element.scaleX
+        height = font:getHeight(element.text) * element.scaleY
+    end
+
+    local left = element.x - width * element.anchorX
+    local right = element.x + width * (1 - element.anchorX)
+    local top = element.y - height * element.anchorY
+    local bottom = element.y + height * (1 - element.anchorY)
+
+    return x >= left and x <= right and y >= top and y <= bottom
+end
+
 function Element:draw(windowScaleFactor, windowOffsetX, windowOffsetY)
     local x = self.x * windowScaleFactor + windowOffsetX + (self.offsetX or 0)
     local y = self.y * windowScaleFactor + windowOffsetY + (self.offsetY or 0)
@@ -144,21 +166,26 @@ local function getSortOrder(element)
 end
 
 function Module:drawAll()
-    table.sort(self._elements, function(elementA, elementB)
-        return getSortOrder(elementA) < getSortOrder(elementB)
+    local elementsArray = {}
+    for _, element in pairs(self._elements) do
+        table.insert(elementsArray, element)
+    end
+
+    table.sort(elementsArray, function(a, b)
+        return getSortOrder(a) < getSortOrder(b)
     end)
 
-    local currentWindowWidth, currentWindowHeight = love.graphics.getDimensions()
-    local baseWindowWidth, baseWindowHeight = _G.windowWidth, _G.windowHeight
+    for _, element in ipairs(elementsArray) do
+        local currentWindowWidth, currentWindowHeight = love.graphics.getDimensions()
+        local baseWindowWidth, baseWindowHeight = _G.windowWidth, _G.windowHeight
 
-    local windowScaleFactorX = currentWindowWidth / baseWindowWidth
-    local windowScaleFactorY = currentWindowHeight / baseWindowHeight
-    local windowScaleFactor = math.min(windowScaleFactorX, windowScaleFactorY)
+        local windowScaleFactorX = currentWindowWidth / baseWindowWidth
+        local windowScaleFactorY = currentWindowHeight / baseWindowHeight
+        local windowScaleFactor = math.min(windowScaleFactorX, windowScaleFactorY)
 
-    local windowOffsetX = (currentWindowWidth - baseWindowWidth * windowScaleFactor) / 2
-    local windowOffsetY = (currentWindowHeight - baseWindowHeight * windowScaleFactor) / 2
+        local windowOffsetX = (currentWindowWidth - baseWindowWidth * windowScaleFactor) / 2
+        local windowOffsetY = (currentWindowHeight - baseWindowHeight * windowScaleFactor) / 2
 
-    for _, element in pairs(self._elements) do
         love.graphics.setScissor(windowOffsetX, windowOffsetY, baseWindowWidth * windowScaleFactor, baseWindowHeight * windowScaleFactor)
         element:draw(windowScaleFactor, windowOffsetX, windowOffsetY)
 

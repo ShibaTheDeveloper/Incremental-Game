@@ -5,18 +5,17 @@ local Manager = {
 Manager.__index = Manager
 
 function Manager:get()
-    local id = self._nextId
     if #self._freeIds > 0 then
-        self._freeIds = table.remove(self._freeIds)
-        return id
+        return table.remove(self._freeIds)
     end
 
+    local id = self._nextId
     self._nextId = self._nextId + 1
     return id
 end
 
 function Manager:release(id)
-    self._freeIds = table.insert(self._freeIds, id)
+    table.insert(self._freeIds, id)
 end
 
 local Module = {}
