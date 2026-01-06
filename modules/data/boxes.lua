@@ -6,7 +6,7 @@ return {
         quote = "Gerald.",
         name = "Gerald",
 
-        weight = 100,
+        weight = 40,
         scale = .7,
         tier = 1,
     },
@@ -39,7 +39,7 @@ return {
         quote = "Ermm.. actually.. ☝️🤓",
         name = "Jeremy",
 
-        weight = 100,
+        weight = 100000,
         scale = 1,
         tier = 4,
     },

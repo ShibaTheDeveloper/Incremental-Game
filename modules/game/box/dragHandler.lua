@@ -1,10 +1,13 @@
 local BoxesObjectModule = require("modules.game.box.object")
 local extra = require("modules.engine.extra")
 
+local CONSTANTS = require("modules.game.box.constants")
+
 local Module = {}
-Module._mouseDown = false
 Module._wasMouseDown = false
+Module._mouseDown = false
 Module._draggedBox = nil
+
 
 function Module:update()
     local mouseDown = love.mouse.isDown(1)
@@ -16,12 +19,17 @@ function Module:update()
                 self._draggedBox = box
                 self._draggedBox.dragging = true
 
+                self._draggedBox.element.color.alpha = .8
+                self._draggedBox.element.zIndex = 2
+
                 break
             end
         end
     end
 
     if not mouseDown and self._draggedBox then
+        self._draggedBox.element.color.alpha = 1
+
         self._draggedBox.dragging = false
         self._draggedBox = nil
     end

@@ -32,8 +32,8 @@ function Module:merge(boxA, boxB)
     local averageWeight = (boxA.weight + boxB.weight) / 2
     local velocityMagnitude = math.sqrt(boxA.velocityX^2 + boxA.velocityY^2 + boxB.velocityX^2 + boxB.velocityY^2) / 2
 
-    local duration = (distance / CONSTANTS.BASE_MERGE_SPEED) * (1 + averageWeight / CONSTANTS.WEIGHT_DURATION_DIVISOR)
-    duration = duration / (1 + velocityMagnitude / CONSTANTS.VELOCITY_SPEED_FACTOR)
+    local duration = (distance / CONSTANTS.BASE_MERGE_SPEED) * (1 + averageWeight / CONSTANTS.WEIGHT_ANIM_DURATION_DIVISOR)
+    duration = duration / (1 + velocityMagnitude / CONSTANTS.VELOCITY_MERGE_DURATION_FACTOR)
 
     table.insert(self._activeMerges, {
         boxA = boxA,
@@ -82,7 +82,7 @@ function Module:mergeUpdate(deltaTime)
                     targetX = newBox.element.scaleX,
                     targetY = newBox.element.scaleY,
                     timeSinceStart = 0,
-                    duration = CONSTANTS.BASE_SCALE_TWEEN_DURATION * (1 + newBox.weight / CONSTANTS.WEIGHT_DURATION_DIVISOR)
+                    duration = CONSTANTS.BASE_SCALE_TWEEN_DURATION * (1 + newBox.weight / CONSTANTS.WEIGHT_ANIM_DURATION_DIVISOR)
                 }
 
                 newBox.element.scaleX = merge.boxA.element.scaleX

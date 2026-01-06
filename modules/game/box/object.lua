@@ -76,7 +76,7 @@ function Module:createBox(tier, x, y)
         targetX = data.scale,
         targetY = data.scale,
         timeSinceStart = 0,
-        duration = CONSTANTS.BASE_SCALE_TWEEN_DURATION * (1 + box.weight / CONSTANTS.WEIGHT_DURATION_DIVISOR)
+        duration = CONSTANTS.BASE_SCALE_TWEEN_DURATION * (1 + box.weight / CONSTANTS.WEIGHT_ANIM_DURATION_DIVISOR)
     }
 
     return box

@@ -1,6 +1,8 @@
 local BoxesObjectModule = require("modules.game.box.object")
 local extra = require("modules.engine.extra")
 
+local CONSTANTS = require("modules.game.box.constants")
+
 local Module = {}
 
 Module.timeSinceLastSpawn = 0
@@ -17,7 +19,7 @@ local function getHighestTier()
 end
 
 local function getSpawnedBoxTier()
-    return extra.clamp(math.floor(getHighestTier() / 10) + 1, 1, math.huge)
+    return extra.clamp(math.floor(getHighestTier() / CONSTANTS.SPAWN_TIER_SCALING_DIVISOR) + 1, 1, math.huge)
 end
 
 function Module:update()
@@ -25,7 +27,9 @@ function Module:update()
         self.timeSinceLastSpawn = os.clock()
 
         local spawnTier = getSpawnedBoxTier()
-        BoxesObjectModule:createBox(spawnTier, math.random(0, _G.WINDOW_WIDTH), math.random(0, _G.WINDOW_HEIGHT))
+        local box = BoxesObjectModule:createBox(spawnTier, math.random(0, CONSTANTS.AREA_WIDTH), math.random(0, CONSTANTS.AREA_HEIGHT))
+        box.velocityX = math.random(-1, 1)
+        box.velocityY = math.random(-1, 1)
     end
 end
 

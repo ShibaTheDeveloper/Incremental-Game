@@ -4,6 +4,8 @@ _G.WINDOW_HEIGHT = 600
 _G.MIN_WINDOW_WIDTH = 400
 _G.MIN_WINDOW_HEIGHT = 300
 
+_G.FPS_SCALE = 240
+
 function love.conf(config)
     config.window.width = _G.WINDOW_WIDTH
     config.window.height = _G.WINDOW_HEIGHT
