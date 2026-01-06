@@ -24,8 +24,8 @@ function Module:update()
     if (os.clock() - self.timeSinceLastSpawn) >= self.spawnInterval then
         self.timeSinceLastSpawn = os.clock()
 
-        local tier = getSpawnedBoxTier()
-        BoxesObjectModule:createBox(tier, math.random(0, _G.windowWidth), math.random(0, _G.windowHeight))
+        local spawnTier = getSpawnedBoxTier()
+        BoxesObjectModule:createBox(spawnTier, math.random(0, _G.WINDOW_WIDTH), math.random(0, _G.WINDOW_HEIGHT))
     end
 end
 

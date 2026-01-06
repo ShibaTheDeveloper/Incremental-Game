@@ -64,8 +64,8 @@ function Module:createBox(tier, x, y)
         weight = data.weight,
         tier = data.tier,
 
-        velocityX = math.random(-100, 100),
-        velocityY = math.random(-100, 100),
+        velocityX = 0,
+        velocityY = 0,
     }, Box)
 
     self.boxes[box.id] = box

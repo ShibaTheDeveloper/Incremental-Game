@@ -6,7 +6,7 @@ return {
         quote = "Gerald.",
         name = "Gerald",
 
-        weight = 40,
+        weight = 100,
         scale = .7,
         tier = 1,
     },

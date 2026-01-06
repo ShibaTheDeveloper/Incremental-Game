@@ -10,8 +10,10 @@ local Module = {}
 Module._activeMerges = {}
 
 function Module:merge(boxA, boxB)
+    if boxA.dragging or boxB.dragging then return end
     if boxA.merging or boxB.merging then return end
     if boxA.tier ~= boxB.tier then return end
+
     if #BoxesData < (boxA.tier + 1) then return end
 
     boxA.merging = true
@@ -28,7 +30,10 @@ function Module:merge(boxA, boxB)
     local distance = math.sqrt(dx * dx + dy * dy)
 
     local averageWeight = (boxA.weight + boxB.weight) / 2
+    local velocityMagnitude = math.sqrt(boxA.velocityX^2 + boxA.velocityY^2 + boxB.velocityX^2 + boxB.velocityY^2) / 2
+
     local duration = (distance / CONSTANTS.BASE_MERGE_SPEED) * (1 + averageWeight / CONSTANTS.WEIGHT_DURATION_DIVISOR)
+    duration = duration / (1 + velocityMagnitude / CONSTANTS.VELOCITY_SPEED_FACTOR)
 
     table.insert(self._activeMerges, {
         boxA = boxA,

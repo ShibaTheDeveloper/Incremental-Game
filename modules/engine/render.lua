@@ -47,24 +47,22 @@ function Element:remove()
     manager:release(id)
 end
 
-function Module:isPointInsideElement(x, y, element)
-    if not element then return false end
-
+function Element:isPointInside(x, y)
     local width, height = 0, 0
 
-    if element.type == "sprite" and element.drawable then
-        width = element.drawable:getWidth() * element.scaleX
-        height = element.drawable:getHeight() * element.scaleY
-    elseif element.type == "text" and element.text then
+    if self.type == "sprite" and self.drawable then
+        width = self.drawable:getWidth() * self.scaleX
+        height = self.drawable:getHeight() * self.scaleY
+    elseif self.type == "text" and self.text then
         local font = love.graphics.getFont()
-        width = font:getWidth(element.text) * element.scaleX
-        height = font:getHeight(element.text) * element.scaleY
+        width = font:getWidth(self.text) * self.scaleX
+        height = font:getHeight(self.text) * self.scaleY
     end
 
-    local left = element.x - width * element.anchorX
-    local right = element.x + width * (1 - element.anchorX)
-    local top = element.y - height * element.anchorY
-    local bottom = element.y + height * (1 - element.anchorY)
+    local left = self.x - width * self.anchorX
+    local right = self.x + width * (1 - self.anchorX)
+    local top = self.y - height * self.anchorY
+    local bottom = self.y + height * (1 - self.anchorY)
 
     return x >= left and x <= right and y >= top and y <= bottom
 end
@@ -143,7 +141,7 @@ end
 
 function Module:getScaledDimensions(x, y)
     local currentWindowWidth, currentWindowHeight = love.graphics.getDimensions()
-    local baseWindowWidth, baseWindowHeight = _G.windowWidth, _G.windowHeight
+    local baseWindowWidth, baseWindowHeight = _G.WINDOW_WIDTH, _G.WINDOW_HEIGHT
 
     local windowScaleX = currentWindowWidth / baseWindowWidth
     local windowScaleY = currentWindowHeight / baseWindowHeight
@@ -177,7 +175,7 @@ function Module:drawAll()
 
     for _, element in ipairs(elementsArray) do
         local currentWindowWidth, currentWindowHeight = love.graphics.getDimensions()
-        local baseWindowWidth, baseWindowHeight = _G.windowWidth, _G.windowHeight
+        local baseWindowWidth, baseWindowHeight = _G.WINDOW_WIDTH, _G.WINDOW_HEIGHT
 
         local windowScaleFactorX = currentWindowWidth / baseWindowWidth
         local windowScaleFactorY = currentWindowHeight / baseWindowHeight

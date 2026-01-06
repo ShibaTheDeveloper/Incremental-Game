@@ -1,15 +1,15 @@
-_G.windowWidth = 800
-_G.windowHeight = 600
+_G.WINDOW_WIDTH = 800
+_G.WINDOW_HEIGHT = 600
 
-_G.minWindowWidth = 400
-_G.minWindowHeight = 300
+_G.MIN_WINDOW_WIDTH = 400
+_G.MIN_WINDOW_HEIGHT = 300
 
 function love.conf(config)
-    config.window.width = _G.windowWidth
-    config.window.height = _G.windowHeight
+    config.window.width = _G.WINDOW_WIDTH
+    config.window.height = _G.WINDOW_HEIGHT
 
-    config.window.minwidth = _G.minWindowWidth
-    config.window.minheight = _G.minWindowHeight
+    config.window.minwidth = _G.MIN_WINDOW_WIDTH
+    config.window.minheight = _G.MIN_WINDOW_HEIGHT
 
     config.window.icon = "assets/sprites/gerald.png"
     config.window.title = "Incremental Game"
