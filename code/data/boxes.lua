@@ -110,17 +110,17 @@ return {
     {
         spritePath = "assets/sprites/boxes/box10.png",
 
-        description = "A granite-man transformed into a box. He's the creator of the faces you see on the boxes.",
-        quote = "ROCK NOISES!!!",
-        name = "Gochged",
+        description = [[An extremely cool cube, who apparantly has terrible parents. Who in their right mind would name their child "Frigid Wendyhot"? Also, who shaved off his other eyebrow?]],
+        quote = "Sup, twin?",
+        name = "Frigid Wendyhot",
 
         screenFlashFadeDuration = 1.5,
         flashScreen = true,
 
         mergeSoundData = {soundPath = "assets/sounds/merge/special.ogg"},
 
-        weight = 600,
-        scale = 1.6,
+        weight = 435,
+        scale = 1.58,
         tier = 10,
     },
     {
@@ -130,25 +130,25 @@ return {
         quote = "Whuh? wha-?",
         name = "Dizzy",
 
-        weight = 450,
-        scale = 1.6,
+        weight = 465,
+        scale = 1.66,
         tier = 11,
     },
     {
         spritePath = "assets/sprites/boxes/box12.png",
 
-        description = "Unknown",
-        quote = "Unknown",
-        name = "Unknown",
+        description = "A granite-man transformed into a box. He's the creator of the faces you see on the boxes.",
+        quote = "ROCK NOISES!!!",
+        name = "Gochged",
 
-        weight = 500,
+        weight = 600,
         scale = 1.7,
-        tier = 12,
+        tier = 10,
     },
     {
         spritePath = "assets/sprites/boxes/box13.png",
 
-        description = "A box that grew so big, it became classifiable as a mountain! Going past this point may not be wise..",
+        description = "A box that grew so big, it became classifiable as a mountain! Going past this point may not be wise.. He looks a little funny tho.",
         quote = "Big back, big back! Big back, big back! Yeah, my back is loaded up with snacks and different foods!",
         name = "Mt. Box",
 
