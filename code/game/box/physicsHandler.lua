@@ -16,7 +16,7 @@ local function applyFriction(box, deltaTime)
     box.velocityY = box.velocityY * (1 - CONSTANTS.FRICTION * fpsFactor * weightFactor)
 end
 
-local function edgeBounceLR(box) -- check for edge bounces on left and right of the play area
+local function edgeBounceLR(box) -- check for edge bounces on the x axis
     local width = box.element.drawable:getWidth() * box.element.scaleX
     local halfWidth = width * box.element.anchorX
 
@@ -29,7 +29,7 @@ local function edgeBounceLR(box) -- check for edge bounces on left and right of 
     end
 end
 
-local function edgeBounceUD(box) -- check for edge bounces on up and down of the play area
+local function edgeBounceUD(box) -- check for edge bounces on the y axis
     local height = box.element.drawable:getHeight() * box.element.scaleY
     local halfHeight = height * box.element.anchorY
 
