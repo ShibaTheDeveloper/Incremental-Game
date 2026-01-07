@@ -4,35 +4,70 @@ local BoxFactoryModule = require("code.game.box.factory")
 local RenderModule = require("code.engine.render")
 
 local BOX_CONSTANTS = require("code.game.box.constants")
+local CONSTANTS = require("code.game.ui.constants")
 
 local Module = {}
-Module._spawnButtonLabel = nil
-Module._spawnButton = nil
+Module._buttons = {
+    spawnButton = {
+        hitbox = nil,
+        elements = {
+            background = nil,
+            label = nil
+        },
+        callback = function()
+            BoxFactoryModule:spawn()
+        end
+    }
+}
 
-local function spawnButton()
-    BoxFactoryModule:spawn()
+local initiated = false
+
+local function buttonClick(button)
+    for _, element in pairs(button.elements) do
+        element.scaleX, element.scaleY = element.scaleX - CONSTANTS.BUTTON_CLICK_SCALE_SUBTRACTION, element.scaleY - CONSTANTS.BUTTON_CLICK_SCALE_SUBTRACTION
+    end
+
+    if button.callback then
+        button.callback()
+    end
 end
 
 function Module:update(deltaTime)
-    if not Module._spawnButtonLabel then return end
-    if not Module._spawnButton then return end
+    if not initiated then return end
 
+    for _, button in pairs(self._buttons) do
+        if not button.hitbox then goto continue end
 
+        for _, element in pairs(button.elements) do
+            if element.scaleX < 1 then
+                local scalePerSecond = 1 / CONSTANTS.BASE_BUTTON_CLICK_SCALE_SPEED
+                local scale = element.scaleX + scalePerSecond * deltaTime
+
+                element.scaleX, element.scaleY = scale, scale
+            else
+                element.scaleX, element.scaleY = 1, 1
+            end
+        end
+
+        :: continue ::
+    end
 end
 
 function Module:mousePressed(x, y, button)
     if button ~= 1 then return end
 
-    if Module._spawnButton:isPointInside(x, y) then
-        spawnButton()
+    for _, button in pairs(self._buttons) do
+        if button.hitbox:isPointInside(x, y) then
+            buttonClick(button)
+        end
     end
 end
 
-function Module.init()
+local function setupSpawnButton()
     local spawnButtonX = BOX_CONSTANTS.AREA_WIDTH + (_G.WINDOW_WIDTH - BOX_CONSTANTS.AREA_WIDTH) / 2
     local spawnButtonY = 475
 
-    Module._spawnButtonLabel = RenderModule:createElement({
+    Module._buttons.spawnButton.elements.label = RenderModule:createElement({
         text = [[Spawn Box!]],
         type = "text",
 
@@ -46,7 +81,7 @@ function Module.init()
         color = RenderModule:createColor(255, 255, 255, 1)
     })
 
-    Module._spawnButton = RenderModule:createElement({
+    Module._buttons.spawnButton.elements.background = RenderModule:createElement({
         spritePath = "assets/sprites/backgrounds/button.png",
         type = "sprite",
 
@@ -57,6 +92,14 @@ function Module.init()
 
         color = RenderModule:createColor(244, 181, 22, 1)
     })
+
+    Module._buttons.spawnButton.hitbox = Module._buttons.spawnButton.elements.background
+end
+
+function Module.init()
+    setupSpawnButton()
+
+    initiated = true
 end
 
 return Module
