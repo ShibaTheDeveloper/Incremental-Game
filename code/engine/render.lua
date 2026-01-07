@@ -86,25 +86,27 @@ function Element:draw(windowScaleFactor, windowOffsetX, windowOffsetY)
 
     local scaleX = self.scaleX * (self.flip and -1 or 1) * windowScaleFactor
     local scaleY = self.scaleY * windowScaleFactor
-
     local rotation = self.rotation * (self.flip and -1 or 1)
-
-    local offsetX, offsetY = 0, 0
-
-    if self.type == "sprite" and self.drawable then
-        offsetX = self.drawable:getWidth() * self.anchorX
-        offsetY = self.drawable:getHeight() * self.anchorY
-    elseif self.type == "text" and self.text then
-        local font = love.graphics.getFont()
-        offsetX = font:getWidth(self.text) * self.anchorX
-        offsetY = font:getHeight() * self.anchorY
-    end
 
     local color = self.color or Module:createColor()
     love.graphics.setColor(color.r, color.g, color.b, color.alpha)
 
-    if self.type == "sprite" then love.graphics.draw(self.drawable, x, y, rotation, scaleX, scaleY, offsetX, offsetY)
-    else love.graphics.print(self.text, x, y, rotation, scaleX, scaleY, offsetX, offsetY) end
+    if self.type == "sprite" and self.drawable then
+        local offsetX = self.drawable:getWidth() * self.anchorX
+        local offsetY = self.drawable:getHeight() * self.anchorY
+        love.graphics.draw(self.drawable, x, y, rotation, scaleX, scaleY, offsetX, offsetY)
+    elseif self.type == "text" and self.text then
+        local font = self.font or love.graphics.getFont()
+        love.graphics.setFont(font)
+
+        local textWidth = font:getWidth(self.text) * scaleX
+        local textHeight = font:getHeight(self.text) * scaleY
+
+        local drawX = x - textWidth * self.anchorX
+        local drawY = y - textHeight * self.anchorY
+
+        love.graphics.print(self.text, drawX, drawY, rotation, scaleX, scaleY)
+    end
 end
 
 function Element:setRotation(rotation)
@@ -120,6 +122,9 @@ function Module:createElement(data)
         type = data.type or "sprite",
         zIndex = data.zIndex or 0,
 
+        text = data.text or "",
+        font = data.font or love.graphics.getFont(),
+
         anchorX = data.anchorX or .5,
         anchorY = data.anchorY or .5,
 
@@ -133,7 +138,7 @@ function Module:createElement(data)
         y = data.y or 0,
 
         color = data.color or Module:createColor(),
-        rotation = data.rotation or  0,
+        rotation = data.rotation or 0,
 
         flip = false
     }, Element)

@@ -80,7 +80,7 @@ function Module:createBox(data)
         screenFlashFadeDuration = data.screenFlashFadeDuration or 2,
         flashScreen = data.flashScreen or false,
 
-        mergeSoundData = data.mergeSoundData or {soundPath = "assets/sounds/merge/default.ogg"},
+        mergeSoundData = data.mergeSoundData or {soundPath = "assets/sounds/merge/default.wav"},
 
         weight = data.weight,
         tier = data.tier,

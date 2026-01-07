@@ -16,7 +16,7 @@ function Module:update()
     local mouseDown = love.mouse.isDown(1)
     local mouseX, mouseY = extra.getScaledMousePos()
 
-    if mouseDown and not self.draggedBox then
+    if mouseDown and not self.draggedBox and not self._mouseDown then
         local boxesArray = BoxesObjectModule:getSortedArray()
         local success = false
 

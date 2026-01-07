@@ -125,10 +125,12 @@ end
 
 function Module:checkMerges()
     --%note TODO: optimize this with quadtrees
-    for _, boxA in pairs(BoxesObjectModule.boxes) do
+    local boxesArray = BoxesObjectModule:getSortedArray()
+
+    for _, boxA in pairs(boxesArray) do
         if boxA.merging then goto continue end
 
-        for _, boxB in pairs(BoxesObjectModule.boxes) do
+        for _, boxB in pairs(boxesArray) do
             if boxA.merging or boxB.merging then goto continue end
             if boxA.tier ~= boxB.tier then goto continue end
             if boxA == boxB then goto continue end

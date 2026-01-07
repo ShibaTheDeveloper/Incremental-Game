@@ -61,7 +61,8 @@ function Module:update(deltaTime)
         dragPhysics(BoxDragHandlerModule.draggedBox)
     end
 
-    for _, box in pairs(BoxesObjectModule.boxes) do
+    local boxesArray = BoxesObjectModule:getSortedArray()
+    for _, box in pairs(boxesArray) do
         if box.merging then goto continue end
 
         changePosition(box, deltaTime)

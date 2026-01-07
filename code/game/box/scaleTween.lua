@@ -8,7 +8,8 @@ local EasingData = require("code.data.easing")
 local Module = {}
 
 function Module:update(deltaTime)
-    for _, box in pairs(BoxesObjectModule.boxes) do
+    local boxesArray = BoxesObjectModule:getSortedArray()
+    for _, box in pairs(boxesArray) do
         local tween = box._scaleTween
         if tween then
             tween.timeSinceStart = tween.timeSinceStart + deltaTime

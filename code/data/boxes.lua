@@ -54,10 +54,10 @@ return {
         quote = "I didn't eat that cookie!",
         name = "Muncher",
 
-        screenFlashFadeDuration = 1.5,
+        screenFlashFadeDuration = 1.2,
         flashScreen = true,
 
-        mergeSoundData = {soundPath = "assets/sounds/merge/special.ogg"},
+        mergeSoundData = {soundPath = "assets/sounds/merge/special.wav"},
 
         weight = 250,
         scale = 1.1,
@@ -114,10 +114,10 @@ return {
         quote = "Sup, twin?",
         name = "Frigid Wendyhot",
 
-        screenFlashFadeDuration = 1.5,
+        screenFlashFadeDuration = 1.2,
         flashScreen = true,
 
-        mergeSoundData = {soundPath = "assets/sounds/merge/special.ogg"},
+        mergeSoundData = {soundPath = "assets/sounds/merge/special.wav"},
 
         weight = 435,
         scale = 1.58,
@@ -178,7 +178,7 @@ return {
         screenFlashFadeDuration = 2.25,
         flashScreen = true,
 
-        mergeSoundData = {soundPath = "assets/sounds/merge/box15.ogg"},
+        mergeSoundData = {soundPath = "assets/sounds/merge/box15.wav"},
 
         weight = 6000,
         scale = 1.95,

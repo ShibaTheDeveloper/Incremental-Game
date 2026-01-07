@@ -1,4 +1,4 @@
--- ~/code/game/box/updateHandler.lua
+-- ~/code/game/box/handler.lua
 
 local BoxRotationHandlerModule = require("code.game.box.rotationHandler")
 local BoxPhysicsHandlerModule = require("code.game.box.physicsHandler")

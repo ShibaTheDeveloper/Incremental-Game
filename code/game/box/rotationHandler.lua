@@ -8,7 +8,8 @@ local CONSTANTS = require("code.game.box.constants")
 local Module = {}
 
 function Module:update()
-    for _, box in pairs(BoxesObjectModule.boxes) do
+    local boxesArray = BoxesObjectModule:getSortedArray()
+    for _, box in pairs(boxesArray) do
         if box.merging then goto continue end
 
         if box.dragging then
