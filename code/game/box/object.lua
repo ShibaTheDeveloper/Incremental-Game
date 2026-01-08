@@ -24,6 +24,9 @@ local Box = {
     screenFlashFadeDuration = 2,
     flashScreen = false,
 
+    reflectionPath = "",
+    reflective = false,
+
     weight = 0,
     tier = 1,
 
@@ -62,7 +65,9 @@ function Module:createBox(data)
         type = "sprite",
         scaleX = data.scale,
         scaleY = data.scale,
-        zIndex = CONSTANTS.BASE_BOX_ZINDEX
+        zIndex = CONSTANTS.BASE_BOX_ZINDEX,
+        reflective = data.reflective,
+        reflectionPath = data.reflectionPath
     })
 
     local box = setmetatable({

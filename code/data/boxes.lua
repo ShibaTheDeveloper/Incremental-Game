@@ -163,6 +163,9 @@ return {
         quote = "RAAAAAAAAAHHH!!!",
         name = "Unstable",
 
+        reflectionPath = "assets/sprites/reflections/box14.png",
+        reflective = true,
+
         weight = 750,
         scale = 1.865,
         tier = 14,

@@ -7,7 +7,7 @@ local BOX_CONSTANTS = require("code.game.box.constants")
 local spawnButtonX = BOX_CONSTANTS.AREA_WIDTH + (_G.WINDOW_WIDTH - BOX_CONSTANTS.AREA_WIDTH) / 2
 local spawnButtonY = 500
 
-local defaultButtonPath = "assets/sprites/backgrounds/button.png"
+local defaultButtonPath = "assets/sprites/ui/button220x75.png"
 local stanberryFontPath = "assets/fonts/Stanberry.ttf"
 
 return {
