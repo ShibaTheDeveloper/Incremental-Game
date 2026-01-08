@@ -8,7 +8,7 @@ local SaveFilesModule = require("code.engine.saveFiles")
 local RenderModule = require("code.engine.render")
 
 VFXHandlerModule.init()
---UIHandlerModule.init()
+UIHandlerModule.init()
 
 SaveFilesModule.loadFile(1)
 

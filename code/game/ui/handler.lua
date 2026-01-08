@@ -1,6 +1,7 @@
 -- ~/code/game/ui/handler.lua
 
 local UIButtonObjectModule = require("code.game.ui.objects.button")
+local UISceneHandlerModule = require("code.game.ui.sceneHandler")
 
 local Module = {}
 
@@ -10,6 +11,10 @@ end
 
 function Module:update(deltaTime)
     UIButtonObjectModule:updateAll(deltaTime)
+end
+
+function Module.init()
+    UISceneHandlerModule:switch("game")
 end
 
 return Module

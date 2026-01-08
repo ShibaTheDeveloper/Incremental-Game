@@ -20,6 +20,16 @@ local Button = {
 }
 Button.__index = Button
 
+local Module = {}
+Module._buttons = {}
+
+function Button:remove()
+    local id = self.id
+
+    Module._buttons[id] = nil
+    manager:release(id)
+end
+
 function Button:click(x, y, mouseButton)
     if (os.clock() - self.lastUsed) < self.cooldown then return end
     if not self.hitboxElement:isPointInside(x, y) then return end
@@ -33,10 +43,8 @@ function Button:click(x, y, mouseButton)
 end
 
 function Button:update(deltaTime)
+    if not self.hitboxElement then self:remove() return end
 end
-
-local Module = {}
-Module._buttons = {}
 
 function Module:createButton(data)
     if not data then return end
@@ -49,7 +57,7 @@ function Module:createButton(data)
 
         elements = data.elements or {},
 
-        cooldown = data.cooldown or 0,
+        cooldown = data.cooldown or .25,
         lastUsed = 0,
 
         hitboxElement = data.hitboxElement,
