@@ -71,7 +71,7 @@ local function setupSpawnButton()
         text = [[Spawn Box!]],
         type = "text",
 
-        font = love.graphics.newFont("assets/Stanberry.ttf", 28),
+        font = love.graphics.newFont("assets/fonts/Stanberry.ttf", 28),
 
         x = spawnButtonX,
         y = spawnButtonY,
