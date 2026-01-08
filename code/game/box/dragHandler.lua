@@ -1,26 +1,28 @@
 -- ~/code/game/box/dragHandler.lua
 
 local BoxesObjectModule = require("code.game.box.object")
-local extra = require("code.engine.extra")
+
+local RenderModule = require("code.engine.render")
 
 local CONSTANTS = require("code.game.box.constants")
 
 local Module = {}
 Module._wasMouseDown = false
-Module._mouseDown = false
 Module.draggedBox = nil
 
 local lastDraggedBoxAlpha = 0
 
 function Module:update()
     local mouseDown = love.mouse.isDown(1)
-    local mouseX, mouseY = extra.getScaledMousePos()
+    local mouseX, mouseY = RenderModule:getMousePos()
 
-    if mouseDown and not self.draggedBox and not self._mouseDown then
+    if mouseDown and not self.draggedBox then
         local boxesArray = BoxesObjectModule:getSortedArray()
         local success = false
 
         for _, box in pairs(boxesArray) do
+            box.element.zIndex = CONSTANTS.BASE_BOX_ZINDEX
+
             if not box.element:isPointInside(mouseX, mouseY) then goto continue end
 
             success = true

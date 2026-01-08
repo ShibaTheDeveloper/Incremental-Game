@@ -38,6 +38,7 @@ local Element = {
     color = Module:createColor(255, 255, 255),
     rotation = 0,
 
+    reflective = false,
     flip = false
 }
 Element.__index = Element
@@ -94,17 +95,43 @@ function Element:draw(windowScaleFactor, windowOffsetX, windowOffsetY)
     if self.type == "sprite" and self.drawable then
         local offsetX = self.drawable:getWidth() * self.anchorX
         local offsetY = self.drawable:getHeight() * self.anchorY
+
+        if self.reflective and self.reflectionPath then
+            if not Module._imageCache[self.reflectionPath] then
+                Module._imageCache[self.reflectionPath] = love.graphics.newImage(self.reflectionPath)
+            end
+            local reflectionImage = Module._imageCache[self.reflectionPath]
+
+            local iw, ih = reflectionImage:getWidth(), reflectionImage:getHeight()
+
+            local boxWidth = self.drawable:getWidth() * self.scaleX
+            local boxHeight = self.drawable:getHeight() * self.scaleY
+            local boxLeft = self.x - self.drawable:getWidth() * self.anchorX
+            local boxTop = self.y - self.drawable:getHeight() * self.anchorY
+
+            local rx = boxLeft / _G.WINDOW_WIDTH * iw
+            local ry = boxTop / _G.WINDOW_HEIGHT * ih
+            local rw = boxWidth / _G.WINDOW_WIDTH * iw
+            local rh = boxHeight / _G.WINDOW_HEIGHT * ih
+
+            local quad = love.graphics.newQuad(rx, ry, rw, rh, iw, ih)
+
+            love.graphics.setColor(1, 1, 1, 1)
+            love.graphics.draw(reflectionImage, quad,
+                x,
+                y,
+                self.rotation,
+                windowScaleFactor, windowScaleFactor,
+                boxWidth / 2, boxHeight / 2
+            )
+        end
+
         love.graphics.draw(self.drawable, x, y, rotation, scaleX, scaleY, offsetX, offsetY)
     elseif self.type == "text" and self.text then
         local font = self.font or love.graphics.getFont()
         love.graphics.setFont(font)
-
-        local textWidth = font:getWidth(self.text) * scaleX
-        local textHeight = font:getHeight(self.text) * scaleY
-
-        local drawX = x - textWidth * self.anchorX
-        local drawY = y - textHeight * self.anchorY
-
+        local drawX = x - font:getWidth(self.text) * scaleX * self.anchorX
+        local drawY = y - font:getHeight(self.text) * scaleY * self.anchorY
         love.graphics.print(self.text, drawX, drawY, rotation, scaleX, scaleY)
     end
 end
@@ -140,7 +167,10 @@ function Module:createElement(data)
         color = data.color or Module:createColor(),
         rotation = data.rotation or 0,
 
-        flip = false
+        reflectionPath = data.reflectionPath or "",
+        reflective = data.reflective or false,
+
+        flip = data.flip or false
     }, Element)
 
     self._elements[element.id] = element
@@ -179,6 +209,11 @@ function Module:getScaledDimensions(x, y)
     virtualY = math.max(0, math.min(baseWindowHeight, virtualY))
 
     return virtualX, virtualY
+end
+
+function Module:getMousePos()
+    local x, y = love.mouse.getPosition()
+    return self:getScaledDimensions(x, y)
 end
 
 local function getSortOrder(element)

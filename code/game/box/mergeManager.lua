@@ -85,10 +85,12 @@ function Module:mergeUpdate(deltaTime)
             merge.boxB:remove()
 
             local newBoxTier = merge.boxA.tier + 1
-            local newBoxData = BoxesObjectModule:getBoxDataByTier(newBoxTier, merge.middleX, merge.middleY)
+            local newBoxData = BoxesObjectModule:getBoxDataByTier(newBoxTier)
             local newBox = BoxesObjectModule:createBox(newBoxData)
 
             if newBox then
+                newBox.element.x, newBox.element.y = merge.middleX, merge.middleY
+
                 newBox.velocityX = (merge.boxA.velocityX + merge.boxB.velocityX) * CONSTANTS.ELASTICITY
                 newBox.velocityY = (merge.boxA.velocityY + merge.boxB.velocityY) * CONSTANTS.ELASTICITY
 
@@ -123,6 +125,13 @@ function Module:mergeUpdate(deltaTime)
     end
 end
 
+local function getMergeRange(boxA, boxB)
+    local avgScale = (boxA.element.scaleX + boxB.element.scaleX) / 2
+    local baseScale = BoxesData[1].scale or 1
+
+    return CONSTANTS.BASE_MERGE_RANGE * (avgScale / baseScale)
+end
+
 function Module:checkMerges()
     --%note TODO: optimize this with quadtrees
     local boxesArray = BoxesObjectModule:getSortedArray()
@@ -139,7 +148,8 @@ function Module:checkMerges()
             local distanceY = boxA.element.y - boxB.element.y
             local distance = math.sqrt(distanceX^2 + distanceY^2)
 
-            if distance > CONSTANTS.BASE_MERGE_RANGE then goto continue end
+            local mergeRange = getMergeRange(boxA, boxB)
+            if distance > mergeRange then goto continue end
 
             self:merge(boxA, boxB)
 

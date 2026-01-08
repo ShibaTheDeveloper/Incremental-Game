@@ -103,7 +103,7 @@ return {
         quote = "YASS QWEEN 💅💅 WE'RE GETTING SOME GEMINI ENERGY! SLAYY! 💅💅💅",
         name = "Angel",
 
-        weight = 400,
+        weight = 345,
         scale = 1.5,
         tier = 9,
     },
@@ -119,7 +119,7 @@ return {
 
         mergeSoundData = {soundPath = "assets/sounds/merge/special.wav"},
 
-        weight = 435,
+        weight = 370,
         scale = 1.58,
         tier = 10,
     },
@@ -130,7 +130,7 @@ return {
         quote = "Whuh? wha-?",
         name = "Dizzy",
 
-        weight = 465,
+        weight = 430,
         scale = 1.66,
         tier = 11,
     },
@@ -143,7 +143,7 @@ return {
 
         weight = 600,
         scale = 1.7,
-        tier = 10,
+        tier = 12,
     },
     {
         spritePath = "assets/sprites/boxes/box13.png",
@@ -152,7 +152,7 @@ return {
         quote = "Big back, big back! Big back, big back! Yeah, my back is loaded up with snacks and different foods!",
         name = "Mt. Box",
 
-        weight = 1500,
+        weight = 500,
         scale = 1.8,
         tier = 13,
     },
@@ -163,7 +163,10 @@ return {
         quote = "RAAAAAAAAAHHH!!!",
         name = "Unstable",
 
-        weight = 3000,
+        reflectionPath = "assets/sprites/reflections/box14.png",
+        reflective = true,
+
+        weight = 750,
         scale = 1.865,
         tier = 14,
     },
@@ -180,7 +183,7 @@ return {
 
         mergeSoundData = {soundPath = "assets/sounds/merge/box15.wav"},
 
-        weight = 6000,
+        weight = 1000,
         scale = 1.95,
         tier = 15,
     },

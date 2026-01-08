@@ -21,13 +21,24 @@ function Sound:pause()
     self.source:pause()
 end
 
-function Sound:play()
+function Sound:play(randomisePitch, min, max, divisor)
+    local defaultPitch = self.pitch
+
+    if randomisePitch then
+        divisor = divisor or 1000
+        min = min or -100
+        max = max or 100
+
+        self.pitch = defaultPitch + math.random(min, max) / divisor
+    end
+
     self.source:stop()
 
     self.source:setVolume(self.volume)
     self.source:setPitch(self.pitch)
 
     self.source:play()
+    self.pitch = defaultPitch
 end
 
 function Sound:stop()

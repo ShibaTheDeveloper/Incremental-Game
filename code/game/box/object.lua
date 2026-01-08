@@ -24,6 +24,9 @@ local Box = {
     screenFlashFadeDuration = 2,
     flashScreen = false,
 
+    reflectionPath = "",
+    reflective = false,
+
     weight = 0,
     tier = 1,
 
@@ -44,12 +47,12 @@ function Box:remove()
     self.element:remove()
 end
 
-function Module:getBoxDataByTier(tier, x, y)
-    local data = extra.cloneTable(BoxesData[tier])
-    if x then data.x = x end
-    if y then data.y = y end
+function Module:getBoxDataByTier(tier)
+    local data = BoxesData[tier]
+    if not BoxesData[tier] then return end
 
-    return data
+    local clonedData = extra.cloneTable(data)
+    return clonedData
 end
 
 function Module:createBox(data)
@@ -62,7 +65,9 @@ function Module:createBox(data)
         type = "sprite",
         scaleX = data.scale,
         scaleY = data.scale,
-        zIndex = CONSTANTS.BASE_BOX_ZINDEX
+        zIndex = CONSTANTS.BASE_BOX_ZINDEX,
+        reflective = data.reflective,
+        reflectionPath = data.reflectionPath
     })
 
     local box = setmetatable({
@@ -115,6 +120,12 @@ function Module:getSortedArray()
     end)
 
     return array
+end
+
+function Module:clearBoxes()
+    for _, box in pairs(self:getSortedArray()) do
+        box:remove()
+    end
 end
 
 return Module

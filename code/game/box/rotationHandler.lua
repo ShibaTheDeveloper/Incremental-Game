@@ -1,8 +1,6 @@
 -- ~/code/game/box/rotationHandler.lua
 
 local BoxesObjectModule = require("code.game.box.object")
-local extra = require("code.engine.extra")
-
 local CONSTANTS = require("code.game.box.constants")
 
 local Module = {}

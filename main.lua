@@ -3,12 +3,14 @@
 local BoxHandlerModule = require("code.game.box.handler")
 local VFXHandlerModule = require("code.game.vfx.handler")
 local UIHandlerModule = require("code.game.ui.handler")
-local extra = require("code.engine.extra")
 
+local SaveFilesModule = require("code.engine.saveFiles")
 local RenderModule = require("code.engine.render")
 
 VFXHandlerModule.init()
 UIHandlerModule.init()
+
+SaveFilesModule.loadFile(1)
 
 function love.update(deltaTime)
     BoxHandlerModule:update(deltaTime)
@@ -21,10 +23,11 @@ function love.draw()
 end
 
 function love.mousepressed(_, _, button)
-    local virtualX, virtualY = extra.getScaledMousePos()
-    UIHandlerModule:mousePressed(virtualX, virtualY, button)
+    local mouseX, mouseY = RenderModule:getMousePos()
+    UIHandlerModule:mousePressed(mouseX, mouseY, button)
 end
 
 function love.quit()
     love.window.setFullscreen(false)
+    SaveFilesModule.saveFile(SaveFilesModule.loadedFile.slot)
 end

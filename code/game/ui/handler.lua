@@ -1,21 +1,20 @@
 -- ~/code/game/ui/handler.lua
 
-local setupUIBackgrounds = require("code.game.ui.backgrounds")
-local UIButtonsModule = require("code.game.ui.buttons")
+local UIButtonObjectModule = require("code.game.ui.objects.button")
+local UISceneHandlerModule = require("code.game.ui.sceneHandler")
 
 local Module = {}
 
 function Module:mousePressed(x, y, button)
-    UIButtonsModule:mousePressed(x, y, button)
+    UIButtonObjectModule:mousePressed(x, y, button)
 end
 
 function Module:update(deltaTime)
-    UIButtonsModule:update(deltaTime)
+    UIButtonObjectModule:updateAll(deltaTime)
 end
 
 function Module.init()
-    UIButtonsModule.init()
-    setupUIBackgrounds()
+    UISceneHandlerModule:switch("game")
 end
 
 return Module
