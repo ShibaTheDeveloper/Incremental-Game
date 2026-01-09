@@ -189,7 +189,7 @@ function Module.getAllSaveFiles()
 end
 
 function Module.quit()
-    if Module.loadedFile.slot then
+    if UISceneHandlerModule.currentScene.name == "game" then
         Module.saveFile(Module.loadedFile.slot)
     end
 end
