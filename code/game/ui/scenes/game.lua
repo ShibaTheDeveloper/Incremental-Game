@@ -107,9 +107,9 @@ local function setupSpawnButton(self)
 end
 
 function Module:update()
-    if not sessionPlaytimeLabel then return end
-
-    sessionPlaytimeLabel.text = "Session Time: " .. extra.formatTime(SaveFilesModule.loadedFile.playtime - playtimeAtSessionStart)
+    if sessionPlaytimeLabel then
+        sessionPlaytimeLabel.text = "Session Time: " .. extra.formatTime(SaveFilesModule.loadedFile.playtime - playtimeAtSessionStart)
+    end
 end
 
 function Module:init()

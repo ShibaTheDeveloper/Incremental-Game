@@ -15,6 +15,7 @@ Module._buttons = {}
 Module.name = "mainMenu"
 
 local SceneData = ScenesData[Module.name]
+local logo = nil
 
 function Module:clean()
     for _, element in pairs(self._elements) do
@@ -30,7 +31,7 @@ function Module:clean()
 end
 
 local function setupLogo(self)
-    local logo = RenderModule:createElement(SceneData.logo)
+    logo = RenderModule:createElement(SceneData.logo)
     table.insert(self._elements, logo)
 end
 
@@ -93,6 +94,12 @@ local function setupQuitButton(self)
     })
 
     table.insert(self._buttons, quitButton)
+end
+
+function Module:update()
+    if logo then
+        logo:setRotation(math.sin(os.clock()) * 2)
+    end
 end
 
 function Module:init()

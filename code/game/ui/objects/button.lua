@@ -43,11 +43,11 @@ function Button:click(x, y, mouseButton)
     self.lastUsed = os.clock()
 
     for _, element in pairs(self.elements) do
-        element._baseScaleX = element._baseScaleX or (element.scaleX or 1)
-        element._baseScaleY = element._baseScaleY or (element.scaleY or 1)
+        if not element._baseScaleX then element._baseScaleX = element._baseScaleX or (element.scaleX or 1) end
+        if not element._baseScaleY then element._baseScaleY = element._baseScaleY or (element.scaleY or 1) end
 
-        element.scaleX = element.scaleX - self._clickScale
-        element.scaleY = element.scaleY - self._clickScale
+        element.scaleX = element._baseScaleX - self._clickScale
+        element.scaleY = element._baseScaleY - self._clickScale
     end
 
     if self.playClickSound then
