@@ -98,6 +98,21 @@ local function deepCopy(tbl)
     return copy
 end
 
+local function mergeDefaults(targetData, defaultData)
+    for key, defaultValue in pairs(defaultData) do
+        if targetData[key] == nil then
+            if type(defaultValue) == "table" then
+                targetData[key] = deepCopy(defaultValue)
+            else
+                targetData[key] = defaultValue
+            end
+        elseif type(defaultValue) == "table" and type(targetData[key]) == "table" then
+            mergeDefaults(targetData[key], defaultValue)
+        end
+    end
+end
+
+
 function Module.saveFile(slot)
     Module.loadedFile.boxes = {}
 
@@ -139,10 +154,11 @@ function Module.loadFile(slot)
         local chunk = love.filesystem.load(path)
         Module.loadedFile = chunk()
         Module.loadedFile.slot = slot
+
+        mergeDefaults(Module.loadedFile, DEFAULT_FILE_DATA)
     else
         Module.loadedFile = deepCopy(DEFAULT_FILE_DATA)
         Module.loadedFile.slot = slot
-
         Module.saveFile(slot)
     end
 
