@@ -1,3 +1,4 @@
+---@diagnostic disable: inject-field
 -- ~/code/engine/saveFiles.lua
 
 local BoxesObjectModule = require("code.game.box.object")
