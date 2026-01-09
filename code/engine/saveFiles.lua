@@ -4,6 +4,7 @@
 local BoxesObjectModule = require("code.game.box.object")
 
 local SAVE_FILE_TEMPLATE = "slot%d.lua"
+local SAVE_SLOTS = 3
 
 local DEFAULT_FILE_DATA = {
     slot = 1,
@@ -150,6 +151,52 @@ function Module.loadFile(slot)
     end
 
     return Module.loadedFile
+end
+
+function Module.getAllSaveFiles()
+    local saves = {}
+
+    for slot = 1, SAVE_SLOTS do
+        local path = string.format(SAVE_FILE_TEMPLATE, slot)
+
+        if love.filesystem.getInfo(path) then
+            local chunk = love.filesystem.load(path)
+            local data = chunk()
+            data.slot = slot
+            saves[slot] = data
+        else
+            local data = deepCopy(DEFAULT_FILE_DATA)
+            data.slot = slot
+            saves[slot] = data
+        end
+    end
+
+    local ordered = {}
+    for slot = 1, SAVE_SLOTS do
+        ordered[#ordered + 1] = saves[slot]
+    end
+
+    return ordered
+end
+
+function Module.quit()
+    if Module.loadedFile.slot then
+        Module.saveFile(Module.loadedFile.slot)
+    end
+end
+
+function Module.init()
+    for slot = 1, SAVE_SLOTS do
+        local path = string.format(SAVE_FILE_TEMPLATE, slot)
+
+        if not love.filesystem.getInfo(path) then
+            local data = deepCopy(DEFAULT_FILE_DATA)
+            data.slot = slot
+
+            local serialized = "return " .. serialize(data)
+            love.filesystem.write(path, serialized)
+        end
+    end
 end
 
 return Module

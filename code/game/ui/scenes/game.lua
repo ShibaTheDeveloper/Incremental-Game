@@ -6,11 +6,13 @@ local BoxFactoryModule = require("code.game.box.factory")
 local RenderModule = require("code.engine.render")
 
 local ScenesData = require("code.data.scenes")
-local SceneData = ScenesData.game
 
 local Module = {}
 Module._elements = {}
 Module._buttons = {}
+Module.name = "game"
+
+local SceneData = ScenesData[Module.name]
 
 function Module:clean()
     for _, element in pairs(self._elements) do

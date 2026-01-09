@@ -1,13 +1,15 @@
 -- ~/code/game/box/factory.lua
 
+local UISceneHandlerModule = require("code.game.ui.sceneHandler")
 local BoxesObjectModule = require("code.game.box.object")
-local extra = require("code.engine.extra")
 
 local CONSTANTS = require("code.game.box.constants")
 
 local Module = {}
 
 function Module:spawn()
+    if UISceneHandlerModule.currentScene.name ~= "game" then return end
+
     local x = math.random(-CONSTANTS.AREA_WIDTH, CONSTANTS.AREA_WIDTH)
     local y = math.random(-CONSTANTS.AREA_HEIGHT, CONSTANTS.AREA_HEIGHT)
 
