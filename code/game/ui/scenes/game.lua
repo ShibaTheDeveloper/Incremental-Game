@@ -1,16 +1,28 @@
 -- ~/code/game/ui/scenes/game.lua
 
+local ScreenTransitionModule = require("code.game.vfx.screenTransition")
+
 local UIButtonObjectModule = require("code.game.ui.objects.button")
+local UISceneHandlerModule = require("code.game.ui.sceneHandler")
+
+local BoxesObjectModule = require("code.game.box.object")
 local BoxFactoryModule = require("code.game.box.factory")
 
+local SaveFilesModule = require("code.engine.saveFiles")
 local RenderModule = require("code.engine.render")
+local extra = require("code.engine.extra")
 
 local ScenesData = require("code.data.scenes")
-local SceneData = ScenesData.game
 
 local Module = {}
 Module._elements = {}
 Module._buttons = {}
+Module.name = "game"
+
+local SceneData = ScenesData[Module.name]
+
+local playtimeAtSessionStart = 0
+local sessionPlaytimeLabel = nil
 
 function Module:clean()
     for _, element in pairs(self._elements) do
@@ -23,6 +35,9 @@ function Module:clean()
 
     self._elements = {}
     self._buttons = {}
+
+    SaveFilesModule.saveFile(SaveFilesModule.loadedFile.slot)
+    BoxesObjectModule:clearBoxes()
 end
 
 local function setupBackgrounds(self)
@@ -31,6 +46,37 @@ local function setupBackgrounds(self)
 
     table.insert(self._elements, playAreaBackground)
     table.insert(self._elements, sidebarBackground)
+end
+
+local function setupSessionPlaytimeLabel(self)
+    playtimeAtSessionStart = SaveFilesModule.loadedFile.playtime
+
+    sessionPlaytimeLabel = RenderModule:createElement(SceneData.sessionPlaytimeLabel)
+    table.insert(self._elements, sessionPlaytimeLabel)
+end
+
+local function setupBackToMenuButton(self)
+    local backToMenuButtonHitbox = RenderModule:createElement(SceneData.backToMenuButtonHitbox)
+    table.insert(self._elements, backToMenuButtonHitbox)
+
+    local backToMenuButton = UIButtonObjectModule:createButton({
+        elements = {
+            backToMenuButtonHitbox,
+        },
+
+        hitboxElement = backToMenuButtonHitbox,
+
+        mouseButton = 1,
+        onClick = function()
+            ScreenTransitionModule:transition({
+                callback = function()
+                    UISceneHandlerModule:switch("saveFiles")
+                end
+            })
+        end
+    })
+
+    table.insert(self._buttons, backToMenuButton)
 end
 
 local function setupSpawnButton(self)
@@ -60,7 +106,15 @@ local function setupSpawnButton(self)
     table.insert(self._buttons, spawnButton)
 end
 
+function Module:update()
+    if not sessionPlaytimeLabel then return end
+
+    sessionPlaytimeLabel.text = "Session Time: " .. extra.formatTime(SaveFilesModule.loadedFile.playtime - playtimeAtSessionStart)
+end
+
 function Module:init()
+    setupSessionPlaytimeLabel(self)
+    setupBackToMenuButton(self)
     setupBackgrounds(self)
     setupSpawnButton(self)
 end

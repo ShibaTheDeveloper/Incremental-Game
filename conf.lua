@@ -21,7 +21,7 @@ function love.conf(config)
     config.window.minheight = _G.MIN_WINDOW_HEIGHT
 
     config.window.icon = "assets/sprites/boxes/box1.png"
-    config.window.title = "Incremental Game"
+    config.window.title = "Merge Boxes! 2D"
 
     config.window.fullscreentype = "desktop"
 

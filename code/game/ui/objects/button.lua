@@ -1,7 +1,9 @@
 -- ~/code/game/ui/objects/button.lua
 
+local ScreenTransitionModule = require("code.game.vfx.screenTransition")
+
 local IdManagerModule = require("code.engine.idManager")
-local RenderModule = require("code.engine.render")
+local SoundModule = require("code.engine.sound")
 
 local manager = IdManagerModule:createManager()
 
@@ -32,18 +34,29 @@ function Button:remove()
 end
 
 function Button:click(x, y, mouseButton)
+    if ScreenTransitionModule.transitioning then return end
+
     if (os.clock() - self.lastUsed) < self.cooldown then return end
     if not self.hitboxElement:isPointInside(x, y) then return end
     if mouseButton ~= self.mouseButton then return end
 
     self.lastUsed = os.clock()
 
-    for _, e in pairs(self.elements) do
-        e._baseScaleX = e._baseScaleX or (e.scaleX or 1)
-        e._baseScaleY = e._baseScaleY or (e.scaleY or 1)
+    for _, element in pairs(self.elements) do
+        element._baseScaleX = element._baseScaleX or (element.scaleX or 1)
+        element._baseScaleY = element._baseScaleY or (element.scaleY or 1)
 
-        e.scaleX = e.scaleX - self._clickScale
-        e.scaleY = e.scaleY - self._clickScale
+        element.scaleX = element.scaleX - self._clickScale
+        element.scaleY = element.scaleY - self._clickScale
+    end
+
+    if self.playClickSound then
+        local sound = SoundModule:createSound({soundPath = "assets/sounds/ui/click.wav"})
+
+        if sound then
+            sound:play(true, -100, 100, 1000)
+            sound:remove()
+        end
     end
 
     if self.onClick then
@@ -77,8 +90,10 @@ function Module:createButton(data)
 
         elements = data.elements or {},
 
-        cooldown = data.cooldown or 0.25,
-        lastUsed = 0,
+        cooldown = data.cooldown or .25,
+        lastUsed = -math.huge,
+
+        playClickSound = data.playClickSound or true,
 
         hitboxElement = data.hitboxElement,
 

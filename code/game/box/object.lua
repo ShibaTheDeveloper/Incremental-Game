@@ -55,7 +55,7 @@ function Module:getBoxDataByTier(tier)
     return clonedData
 end
 
-function Module:createBox(data)
+function Module:createBoxElement(data)
     if not data then return end
 
     local element = RenderModule:createElement({
@@ -69,6 +69,14 @@ function Module:createBox(data)
         reflective = data.reflective,
         reflectionPath = data.reflectionPath
     })
+
+    return element
+end
+
+function Module:createBox(data)
+    if not data then return end
+
+    local element = self:createBoxElement(data)
 
     local box = setmetatable({
         id = manager:get(),

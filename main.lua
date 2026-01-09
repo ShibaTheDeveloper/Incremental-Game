@@ -10,12 +10,13 @@ local RenderModule = require("code.engine.render")
 VFXHandlerModule.init()
 UIHandlerModule.init()
 
-SaveFilesModule.loadFile(1)
+SaveFilesModule.init()
 
 function love.update(deltaTime)
     BoxHandlerModule:update(deltaTime)
     VFXHandlerModule:update(deltaTime)
     UIHandlerModule:update(deltaTime)
+    SaveFilesModule:update(deltaTime)
 end
 
 function love.draw()
@@ -29,5 +30,5 @@ end
 
 function love.quit()
     love.window.setFullscreen(false)
-    SaveFilesModule.saveFile(SaveFilesModule.loadedFile.slot)
+    SaveFilesModule.quit()
 end

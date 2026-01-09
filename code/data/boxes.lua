@@ -40,7 +40,7 @@ return {
         spritePath = "assets/sprites/boxes/box4.png",
 
         description = "Jeremy loves to remind the teacher about the homework. Nobody likes Jeremy.",
-        quote = "Ermm.. actually.. ☝️🤓",
+        quote = "Ermm.. actually..! ☝️🤓",
         name = "Jeremy",
 
         weight = 120,

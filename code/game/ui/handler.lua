@@ -11,10 +11,11 @@ end
 
 function Module:update(deltaTime)
     UIButtonObjectModule:updateAll(deltaTime)
+    UISceneHandlerModule:update(deltaTime)
 end
 
 function Module.init()
-    UISceneHandlerModule:switch("game")
+    UISceneHandlerModule:switch("mainMenu")
 end
 
 return Module

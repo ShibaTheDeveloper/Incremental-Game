@@ -100,6 +100,7 @@ function Element:draw(windowScaleFactor, windowOffsetX, windowOffsetY)
             if not Module._imageCache[self.reflectionPath] then
                 Module._imageCache[self.reflectionPath] = love.graphics.newImage(self.reflectionPath)
             end
+
             local reflectionImage = Module._imageCache[self.reflectionPath]
 
             local iw, ih = reflectionImage:getWidth(), reflectionImage:getHeight()
@@ -109,14 +110,14 @@ function Element:draw(windowScaleFactor, windowOffsetX, windowOffsetY)
             local boxLeft = self.x - self.drawable:getWidth() * self.anchorX
             local boxTop = self.y - self.drawable:getHeight() * self.anchorY
 
-            local rx = boxLeft / _G.WINDOW_WIDTH * iw
-            local ry = boxTop / _G.WINDOW_HEIGHT * ih
+            local rx = boxLeft / _G.WINDOW_WIDTH * iw - (boxLeft / 4)
+            local ry = boxTop / _G.WINDOW_HEIGHT * ih - (boxTop / 4)
             local rw = boxWidth / _G.WINDOW_WIDTH * iw
             local rh = boxHeight / _G.WINDOW_HEIGHT * ih
 
             local quad = love.graphics.newQuad(rx, ry, rw, rh, iw, ih)
 
-            love.graphics.setColor(1, 1, 1, 1)
+            love.graphics.setColor(1, 1, 1, self.color.alpha)
             love.graphics.draw(reflectionImage, quad,
                 x,
                 y,

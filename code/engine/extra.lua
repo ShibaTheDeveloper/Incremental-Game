@@ -23,4 +23,12 @@ function Module.lerp(a, b, lerpFactor)
     return a + (b - a) * lerpFactor
 end
 
+function Module.formatTime(seconds)
+    local hours = math.floor(seconds / 3600)
+    local minutes = math.floor((seconds % 3600) / 60)
+    local secs = math.floor(seconds % 60)
+
+    return string.format("%02d:%02d:%02d", hours, minutes, secs)
+end
+
 return Module

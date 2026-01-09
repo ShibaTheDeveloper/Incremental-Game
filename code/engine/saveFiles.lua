@@ -1,13 +1,20 @@
+---@diagnostic disable: inject-field
 -- ~/code/engine/saveFiles.lua
 
+local UISceneHandlerModule = require("code.game.ui.sceneHandler")
 local BoxesObjectModule = require("code.game.box.object")
 
 local SAVE_FILE_TEMPLATE = "slot%d.lua"
+local SAVE_SLOTS = 3
 
 local DEFAULT_FILE_DATA = {
     slot = 1,
 
+    highestBoxTier = 1,
     boxSpawnTier = 1,
+
+    playtime = 0,
+
     money = 0,
 
     settings = {
@@ -94,6 +101,7 @@ end
 function Module.saveFile(slot)
     Module.loadedFile.boxes = {}
 
+    local highestTier = 1
     for _, box in pairs(BoxesObjectModule:getSortedArray()) do
         table.insert(Module.loadedFile.boxes, {
             velocityX = box.velocityX,
@@ -104,7 +112,11 @@ function Module.saveFile(slot)
             y = box.element.y,
             tier = box.tier
         })
+
+        if box.tier > highestTier then highestTier = box.tier end
     end
+
+    Module.loadedFile.highestBoxTier = highestTier
 
     local path = string.format(SAVE_FILE_TEMPLATE, slot)
     local data = "return " .. serialize(Module.loadedFile)
@@ -126,9 +138,11 @@ function Module.loadFile(slot)
     if love.filesystem.getInfo(path) then
         local chunk = love.filesystem.load(path)
         Module.loadedFile = chunk()
+        Module.loadedFile.slot = slot
     else
         Module.loadedFile = deepCopy(DEFAULT_FILE_DATA)
-        Module.loadedFile.fileNum = slot
+        Module.loadedFile.slot = slot
+
         Module.saveFile(slot)
     end
 
@@ -139,16 +153,66 @@ function Module.loadFile(slot)
         if box then
             box.velocityX = savedBoxData.velocityX
             box.velocityY = savedBoxData.velocityY
-
             box.element.x = savedBoxData.x
             box.element.y = savedBoxData.y
-
             box.element.rotation = savedBoxData.rotation
         end
-
     end
 
     return Module.loadedFile
+end
+
+function Module.getAllSaveFiles()
+    local saves = {}
+
+    for slot = 1, SAVE_SLOTS do
+        local path = string.format(SAVE_FILE_TEMPLATE, slot)
+
+        if love.filesystem.getInfo(path) then
+            local chunk = love.filesystem.load(path)
+            local data = chunk()
+            data.slot = slot
+            saves[slot] = data
+        else
+            local data = deepCopy(DEFAULT_FILE_DATA)
+            data.slot = slot
+            saves[slot] = data
+        end
+    end
+
+    local ordered = {}
+    for slot = 1, SAVE_SLOTS do
+        ordered[#ordered + 1] = saves[slot]
+    end
+
+    return ordered
+end
+
+function Module.quit()
+    if Module.loadedFile.slot then
+        Module.saveFile(Module.loadedFile.slot)
+    end
+end
+
+function Module:update(deltaTime)
+    if not Module.loadedFile then return end
+    if Module.loadedFile.playtime == nil then return end
+
+    Module.loadedFile.playtime = Module.loadedFile.playtime + deltaTime
+end
+
+function Module.init()
+    for slot = 1, SAVE_SLOTS do
+        local path = string.format(SAVE_FILE_TEMPLATE, slot)
+
+        if not love.filesystem.getInfo(path) then
+            local data = deepCopy(DEFAULT_FILE_DATA)
+            data.slot = slot
+
+            local serialized = "return " .. serialize(data)
+            love.filesystem.write(path, serialized)
+        end
+    end
 end
 
 return Module

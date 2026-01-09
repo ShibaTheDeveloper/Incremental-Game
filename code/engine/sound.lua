@@ -21,10 +21,10 @@ function Sound:pause()
     self.source:pause()
 end
 
-function Sound:play(randomisePitch, min, max, divisor)
+function Sound:play(randomizePitch, min, max, divisor)
     local defaultPitch = self.pitch
 
-    if randomisePitch then
+    if randomizePitch then
         divisor = divisor or 1000
         min = min or -100
         max = max or 100
