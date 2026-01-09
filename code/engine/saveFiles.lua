@@ -98,7 +98,6 @@ local function deepCopy(tbl)
     return copy
 end
 
--- Recursively adds missing keys from defaultData into targetData
 local function mergeDefaults(targetData, defaultData)
     for key, defaultValue in pairs(defaultData) do
         if targetData[key] == nil then
@@ -154,10 +153,11 @@ function Module.loadFile(slot)
         local chunk = love.filesystem.load(path)
         Module.loadedFile = chunk()
         Module.loadedFile.slot = slot
+
+        mergeDefaults(Module.loadedFile, DEFAULT_FILE_DATA)
     else
         Module.loadedFile = deepCopy(DEFAULT_FILE_DATA)
         Module.loadedFile.slot = slot
-
         Module.saveFile(slot)
     end
 
