@@ -36,6 +36,11 @@ function Module:clean()
     self._buttons = {}
 end
 
+local function startGame(save)
+    SaveFilesModule.loadFile(save.slot)
+    UISceneHandlerModule:switch("game")
+end
+
 local function setupBackground(self)
     local background = RenderModule:createElement(SceneData.background)
     table.insert(self._elements, background)
@@ -96,8 +101,7 @@ local function setupSaveFileLoadButton(self, backgroundElement, save)
         onClick = function()
             ScreenTransitionModule:transition({
                 callback = function()
-                    SaveFilesModule.loadFile(save.slot)
-                    UISceneHandlerModule:switch("game")
+                    startGame(save)
                 end
             })
         end
@@ -217,7 +221,7 @@ local function setupSaveFileBackgrounds(self)
                     ScreenTransitionModule:transition({
                         callback = function()
                             SaveFilesModule.createFile(save.slot)
-                            UISceneHandlerModule:switch("saveFiles")
+                            startGame(save)
                         end,
 
                         duration = 1.2
