@@ -58,8 +58,6 @@ local function setupSaveHighestTier(self, backgroundElement, save)
 end
 
 local function setupSaveFileBoxPreview(self, backgroundElement, save)
-    if save.playtime == 0 then return end
-
     local data = BoxesObjectModule:getBoxDataByTier(save.highestBoxTier)
     local templateSaveFileBoxPreview = BoxesObjectModule:createBoxElement(data)
 
@@ -194,11 +192,41 @@ local function setupSaveFileBackgrounds(self)
         table.insert(self._elements, templateSaveFileBackground)
         table.insert(self._elements, templateSaveFileLabel)
 
-        setupSaveFileButtons(self, templateSaveFileBackground, save)
+        if save.created then
+            setupSaveFileButtons(self, templateSaveFileBackground, save)
 
-        setupSaveFileBoxPreview(self, templateSaveFileBackground, save)
-        setupSaveHighestTier(self, templateSaveFileBackground, save)
-        setupSavePlaytime(self, templateSaveFileBackground, save)
+            setupSaveFileBoxPreview(self, templateSaveFileBackground, save)
+            setupSaveHighestTier(self, templateSaveFileBackground, save)
+            setupSavePlaytime(self, templateSaveFileBackground, save)
+        else
+            local templateSaveFilePlusIcon = RenderModule:createElement(SceneData.templateSaveFilePlusIcon)
+            templateSaveFilePlusIcon.x = x
+
+            table.insert(self._elements, templateSaveFilePlusIcon)
+
+            local createSaveFileButton = UIButtonObjectModule:createButton({
+                elements = {
+                    templateSaveFileBackground,
+                    templateSaveFilePlusIcon
+                },
+
+                hitboxElement = templateSaveFileBackground,
+
+                mouseButton = 1,
+                onClick = function()
+                    ScreenTransitionModule:transition({
+                        callback = function()
+                            SaveFilesModule.createFile(save.slot)
+                            UISceneHandlerModule:switch("saveFiles")
+                        end,
+
+                        duration = 1.2
+                    })
+                end
+            })
+
+            table.insert(self._buttons, createSaveFileButton)
+        end
     end
 end
 

@@ -8,6 +8,7 @@ local SAVE_FILE_TEMPLATE = "slot%d.lua"
 local SAVE_SLOTS = 3
 
 local DEFAULT_FILE_DATA = {
+    created = false,
     slot = 1,
 
     highestBoxTier = 0,
@@ -214,6 +215,14 @@ function Module:update(deltaTime)
     if Module.loadedFile.playtime == nil then return end
 
     Module.loadedFile.playtime = Module.loadedFile.playtime + deltaTime
+end
+
+function Module.createFile(slot)
+    Module.loadedFile = deepCopy(DEFAULT_FILE_DATA)
+    Module.loadedFile.slot = slot
+    Module.loadedFile.created = true
+
+    Module.saveFile(slot)
 end
 
 function Module.init()

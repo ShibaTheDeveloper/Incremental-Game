@@ -260,6 +260,17 @@ return {
             zIndex = 1004
         },
 
+        templateSaveFilePlusIcon = {
+            spritePath = "assets/sprites/ui/buttonplus100x100.png",
+            type = "sprite",
+
+            x = MIDDLE_X,
+            y = NEW_GAME_BUTTON_Y / TEMPLATE_SAVE_FILE_Y_DIVIDER - 25,
+            scaleX = 1,
+            scaleY = 1,
+            zIndex = 1004
+        },
+
         templateSaveHighestTier = {
             text = "Highest Tier: 1",
             type = "text",
