@@ -181,7 +181,7 @@ return {
         screenFlashFadeDuration = 2.25,
         flashScreen = true,
 
-        mergeSoundData = {soundPath = "assets/sounds/merge/box15.wav"},
+        --mergeSoundData = {soundPath = "assets/sounds/merge/box15.wav"},
 
         weight = 1000,
         scale = 1.95,
