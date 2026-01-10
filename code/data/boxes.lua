@@ -2,6 +2,28 @@
 
 local RenderModule = require("code.engine.render")
 
+local function HSVtoRGB(h, s, v)
+    local r, g, b
+
+    local i = math.floor(h * 6)
+    local f = h * 6 - i
+    local p = v * (1 - s)
+    local q = v * (1 - f * s)
+    local t = v * (1 - (1 - f) * s)
+
+    i = i % 6
+
+    if i == 0 then r, g, b = v, t, p
+    elseif i == 1 then r, g, b = q, v, p
+    elseif i == 2 then r, g, b = p, v, t
+    elseif i == 3 then r, g, b = p, q, v
+    elseif i == 4 then r, g, b = t, p, v
+    elseif i == 5 then r, g, b = v, p, q
+    end
+
+    return RenderModule:createColor(math.floor(r*255), math.floor(g*255), math.floor(b*255))
+end
+
 return {
     {
         spritePath = "assets/sprites/boxes/box1.png",
@@ -177,14 +199,77 @@ return {
         quote = "...",
         name = "Transcended",
 
-        screenFlashColor = RenderModule:createColor(255, 255, 255, 1),
-        screenFlashFadeDuration = 2.25,
-        flashScreen = true,
+        --screenFlashColor = RenderModule:createColor(255, 255, 255, 1),
+        --screenFlashFadeDuration = 2.25,
+        --flashScreen = true,
 
         --mergeSoundData = {soundPath = "assets/sounds/merge/box15.wav"},
+
+        screenFlashFadeDuration = 1.2,
+        flashScreen = true,
+
+        mergeSoundData = {soundPath = "assets/sounds/merge/special.wav"},
 
         weight = 1000,
         scale = 1.95,
         tier = 15,
+    },
+    {
+        spritePath = "assets/sprites/boxes/box16.png",
+
+        description = "A mesmerizing box which is hard to look at. You have fused so much matter into one being, that it is starting to spill.",
+        quote = "ZXZlcnl0aGluZw==",
+        name = "Omnibox",
+
+        --screenFlashColor = RenderModule:createColor(255, 255, 255, 1),
+        --screenFlashFadeDuration = 2.25,
+        --flashScreen = true,
+
+        onUpdateCosmetic = function(element)
+            local hue = (os.clock() % 5) / 5
+            element.color = HSVtoRGB(hue, 1, 1)
+        end,
+
+        --mergeSoundData = {soundPath = "assets/sounds/merge/box16.wav"},
+
+        weight = 1100,
+        scale = 2,
+        tier = 16,
+    },
+    {
+        spritePath = "assets/sprites/boxes/box17.png",
+
+        description = "A sinister and unstable box. It has become so big that it's weight is in the negatives.",
+        quote = "MUAHAHAHAHA!",
+        name = "Devoided",
+
+        --screenFlashColor = RenderModule:createColor(43, 43, 255, 1),
+        --screenFlashFadeDuration = 2.25,
+        --flashScreen = true,
+
+        reflectionPath = "assets/sprites/reflections/box17.png",
+        reflective = true,
+
+        --mergeSoundData = {soundPath = "assets/sounds/merge/box17.wav"},
+
+        weight = -60,
+        scale = 2.05,
+        tier = 17,
+    },
+    {
+        spritePath = "assets/sprites/boxes/box18.png",
+
+        description = "Quite a playful box that likes to mess around with it's shapeshifting ability. Will occasionally shapeshift into the lower-tier boxes while still being counted as the same tier.",
+        quote = "Hide and seek! will you find me?",
+        name = "Box o' Matter",
+
+        --screenFlashFadeDuration = 2.25,
+        --flashScreen = true,
+
+        --mergeSoundData = {soundPath = "assets/sounds/merge/box18.wav"},
+
+        weight = 1300,
+        scale = 2.15,
+        tier = 18,
     },
 }

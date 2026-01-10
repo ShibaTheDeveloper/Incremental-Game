@@ -4,7 +4,9 @@
 local UISceneHandlerModule = require("code.game.ui.sceneHandler")
 local BoxesObjectModule = require("code.game.box.object")
 
+local SETTINGS_FILE_PATH = "settings.lua"
 local SAVE_FILE_TEMPLATE = "slot%d.lua"
+
 local SAVE_SLOTS = 3
 
 local DEFAULT_FILE_DATA = {
@@ -17,15 +19,13 @@ local DEFAULT_FILE_DATA = {
     playtime = 0,
 
     money = 0,
-
-    settings = {
-        sounds = {
-            masterVolume = .5,
-            soundVolume = .5,
-            musicVolume = .5
-        }
-    },
     boxes = {}
+}
+
+local DEFAULT_SETTINGS_FILE_DATA = {
+    masterVolume = .5,
+    soundVolume = 1,
+    trackVolume = 1
 }
 
 local LUA_KEYWORDS = {
@@ -38,6 +38,7 @@ local LUA_KEYWORDS = {
 }
 
 local Module = {}
+Module.settingsFile = {}
 Module.loadedFile = {}
 
 -- checks if a string key can be used without quotes
@@ -225,7 +226,25 @@ function Module.createFile(slot)
     Module.saveFile(slot)
 end
 
+function Module.saveSettings()
+    local data = "return " .. serialize(Module.settingsFile)
+    love.filesystem.write(SETTINGS_FILE_PATH, data)
+end
+
+local function loadSettings()
+    if love.filesystem.getInfo(SETTINGS_FILE_PATH) then
+        local chunk = love.filesystem.load(SETTINGS_FILE_PATH)
+        Module.settingsFile = chunk()
+        mergeDefaults(Module.settingsFile, DEFAULT_SETTINGS_FILE_DATA)
+    else
+        Module.settingsFile = deepCopy(DEFAULT_SETTINGS_FILE_DATA)
+        Module.saveSettings()
+    end
+end
+
 function Module.init()
+    loadSettings()
+
     for slot = 1, SAVE_SLOTS do
         local path = string.format(SAVE_FILE_TEMPLATE, slot)
         local data

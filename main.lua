@@ -1,22 +1,26 @@
 -- ~/main.lua
 
+local MusicHandlerModule = require("code.game.musicHandler")
 local BoxHandlerModule = require("code.game.box.handler")
 local VFXHandlerModule = require("code.game.vfx.handler")
 local UIHandlerModule = require("code.game.ui.handler")
 
 local SaveFilesModule = require("code.engine.saveFiles")
 local RenderModule = require("code.engine.render")
-
-VFXHandlerModule.init()
-UIHandlerModule.init()
+local SoundModule = require("code.engine.sound")
 
 SaveFilesModule.init()
+
+MusicHandlerModule.init()
+VFXHandlerModule.init()
+UIHandlerModule.init()
 
 function love.update(deltaTime)
     BoxHandlerModule:update(deltaTime)
     VFXHandlerModule:update(deltaTime)
     UIHandlerModule:update(deltaTime)
     SaveFilesModule:update(deltaTime)
+    SoundModule:update()
 end
 
 function love.draw()

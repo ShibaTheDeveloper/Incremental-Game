@@ -22,6 +22,10 @@ function Module:flash(color, fadeDuration)
     self._fadeDuration = fadeDuration or 2
 end
 
+function Module:stop()
+    self._screenFlashElement.color = RenderModule:createColor(0, 0, 0, 0)
+end
+
 function Module:update(deltaTime)
     local element = self._screenFlashElement
     if not element then return end

@@ -52,7 +52,7 @@ end
 local function dragPhysics(box)
     if box.dragging then
         local mouseX, mouseY = RenderModule:getMousePos()
-        local weightFactor = getWeightFactor(box)
+        local weightFactor = math.max(getWeightFactor(box), .01)
 
         box.velocityX = (mouseX - box.element.x)
             * CONSTANTS.DRAG_VELOCITY_MULTIPLIER

@@ -24,6 +24,11 @@ local Box = {
     screenFlashFadeDuration = 2,
     flashScreen = false,
 
+    onUpdateCosmetic = nil,
+    onUpdate = nil,
+
+    mergeSoundData = {},
+
     reflectionPath = "",
     reflective = false,
 
@@ -93,6 +98,9 @@ function Module:createBox(data)
         screenFlashFadeDuration = data.screenFlashFadeDuration or 2,
         flashScreen = data.flashScreen or false,
 
+        onUpdateCosmetic = data.onUpdateCosmetic or nil,
+        onUpdate = data.onUpdate or nil,
+
         mergeSoundData = data.mergeSoundData or {soundPath = "assets/sounds/merge/default.wav"},
 
         weight = data.weight,
@@ -133,6 +141,15 @@ end
 function Module:clearBoxes()
     for _, box in pairs(self:getSortedArray()) do
         box:remove()
+    end
+end
+
+function Module:update(deltaTime)
+    local array = self:getSortedArray()
+
+    for _, box in pairs(array) do
+        if box.onUpdateCosmetic then box.onUpdateCosmetic(box.element, deltaTime) end
+        if box.onUpdate then box.onUpdate(box, deltaTime) end
     end
 end
 

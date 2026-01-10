@@ -1,6 +1,9 @@
 -- ~/code/game/ui/scenes/game.lua
 
 local ScreenTransitionModule = require("code.game.vfx.screenTransition")
+local ScreenFlashModule = require("code.game.vfx.screenFlash")
+
+local MusicHandlerModule = require("code.game.musicHandler")
 
 local UIButtonObjectModule = require("code.game.ui.objects.button")
 local UISceneHandlerModule = require("code.game.ui.sceneHandler")
@@ -37,7 +40,9 @@ function Module:clean()
     self._buttons = {}
 
     SaveFilesModule.saveFile(SaveFilesModule.loadedFile.slot)
+
     BoxesObjectModule:clearBoxes()
+    ScreenFlashModule:stop()
 end
 
 local function setupBackgrounds(self)

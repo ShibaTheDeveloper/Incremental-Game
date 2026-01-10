@@ -1,6 +1,7 @@
 -- ~/code/game/ui/scenes/saveFiles.lua
 
 local ScreenTransitionModule = require("code.game.vfx.screenTransition")
+local MusicHandlerModule = require("code.game.musicHandler")
 
 local BoxesObjectModule = require("code.game.box.object")
 
@@ -17,6 +18,7 @@ local Module = {}
 Module._resetButtons = {}
 Module._elements = {}
 Module._buttons = {}
+Module._boxes = {}
 Module.name = "saveFiles"
 
 local SceneData = ScenesData[Module.name]
@@ -74,9 +76,12 @@ local function setupSaveFileBoxPreview(self, backgroundElement, save)
         templateSaveFileBoxPreview.scaleY = SceneData.templateSaveFileBoxPreview.scaleY
 
         templateSaveFileBoxPreview.zIndex = SceneData.templateSaveFileBoxPreview.zIndex
-    end
 
-    table.insert(self._elements, templateSaveFileBoxPreview)
+        templateSaveFileBoxPreview.boxData = data
+
+        table.insert(self._elements, templateSaveFileBoxPreview)
+        table.insert(self._boxes, templateSaveFileBoxPreview)
+    end
 end
 
 local function setupSaveFileLoadButton(self, backgroundElement, save)
@@ -262,7 +267,16 @@ local function setupBackToMenuButton(self)
     table.insert(self._buttons, backToMenuButton)
 end
 
-function Module:update()
+function Module:update(deltaTime)
+    for _, box in pairs(self._boxes) do
+        if not box.boxData then goto continue end
+        if not box.boxData.onUpdateCosmetic then goto continue end
+
+        box.boxData.onUpdateCosmetic(box, deltaTime)
+
+        :: continue ::
+    end
+
     for _, button in pairs(self._resetButtons) do
         if (os.clock() - button.lastConfirm) < RESET_BUTTON_WARN_TIME_OUT then goto continue end
         if button.deleting then goto continue end
@@ -275,6 +289,8 @@ function Module:update()
 end
 
 function Module:init()
+    MusicHandlerModule:playTrack("mainMenu")
+
     setupSaveFileBackgrounds(self)
     setupBackToMenuButton(self)
     setupBackground(self)

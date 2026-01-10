@@ -1,6 +1,7 @@
 -- ~/code/game/ui/scenes/mainMenu.lua
 
 local ScreenTransitionModule = require("code.game.vfx.screenTransition")
+local MusicHandlerModule = require("code.game.musicHandler")
 
 local UIButtonObjectModule = require("code.game.ui.objects.button")
 local UISceneHandlerModule = require("code.game.ui.sceneHandler")
@@ -103,6 +104,8 @@ function Module:update()
 end
 
 function Module:init()
+    MusicHandlerModule:playTrack("mainMenu")
+
     setupPlayGameButton(self)
     setupQuitButton(self)
     setupBackground(self)
