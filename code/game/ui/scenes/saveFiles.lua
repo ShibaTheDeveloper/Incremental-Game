@@ -7,12 +7,15 @@ local BoxesObjectModule = require("code.game.box.object")
 
 local UIButtonObjectModule = require("code.game.ui.objects.button")
 local UISceneHandlerModule = require("code.game.ui.sceneHandler")
+local UISharedFunctions = require("code.game.ui.shared")
 
 local SaveFilesModule = require("code.engine.saveFiles")
 local RenderModule = require("code.engine.render")
 local extra = require("code.engine.extra")
 
-local ScenesData = require("code.data.scenes")
+local UIData = require("code.data.ui")
+
+local CONSTANTS = require("code.game.ui.constants")
 
 local Module = {}
 Module._resetButtons = {}
@@ -21,9 +24,7 @@ Module._buttons = {}
 Module._boxes = {}
 Module.name = "saveFiles"
 
-local SceneData = ScenesData[Module.name]
-
-local RESET_BUTTON_WARN_TIME_OUT = .5
+local SceneData = UIData[Module.name]
 
 function Module:clean()
     for _, element in pairs(self._elements) do
@@ -142,7 +143,7 @@ local function setupSaveFileResetButton(self, backgroundElement, save)
             if saveFileResetButton.deleting then return end
 
             ---@diagnostic disable-next-line: need-check-nil
-            if (os.clock() - saveFileResetButton.lastConfirm) >= RESET_BUTTON_WARN_TIME_OUT then
+            if (os.clock() - saveFileResetButton.lastConfirm) >= CONSTANTS.RESET_BUTTON_WARN_TIME_OUT then
                 saveFileResetButtonLabel.text = "Are you sure?"
                 saveFileResetButton.lastConfirm = os.clock()
 
@@ -278,7 +279,7 @@ function Module:update(deltaTime)
     end
 
     for _, button in pairs(self._resetButtons) do
-        if (os.clock() - button.lastConfirm) < RESET_BUTTON_WARN_TIME_OUT then goto continue end
+        if (os.clock() - button.lastConfirm) < CONSTANTS.RESET_BUTTON_WARN_TIME_OUT then goto continue end
         if button.deleting then goto continue end
 
         button.elements[1].text = SceneData.templateSaveFileResetButtonLabel.text
@@ -289,6 +290,7 @@ function Module:update(deltaTime)
 end
 
 function Module:init()
+    UISharedFunctions:setupSettingsButton(self)
     MusicHandlerModule:playTrack("mainMenu")
 
     setupSaveFileBackgrounds(self)

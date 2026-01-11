@@ -5,17 +5,18 @@ local MusicHandlerModule = require("code.game.musicHandler")
 
 local UIButtonObjectModule = require("code.game.ui.objects.button")
 local UISceneHandlerModule = require("code.game.ui.sceneHandler")
+local UISharedFunctions = require("code.game.ui.shared")
 
 local RenderModule = require("code.engine.render")
 
-local ScenesData = require("code.data.scenes")
+local UIData = require("code.data.ui")
 
 local Module = {}
 Module._elements = {}
 Module._buttons = {}
 Module.name = "mainMenu"
 
-local SceneData = ScenesData[Module.name]
+local SceneData = UIData[Module.name]
 
 local logo2 = nil
 local logo = nil
@@ -113,6 +114,7 @@ function Module:update()
 end
 
 function Module:init()
+    UISharedFunctions:setupSettingsButton(self)
     MusicHandlerModule:playTrack("mainMenu")
 
     setupPlayGameButton(self)

@@ -1,35 +1,17 @@
 -- ~/code/data/scenes.lua
 
 local RenderModule = require("code.engine.render")
+
 local BOX_CONSTANTS = require("code.game.box.constants")
-
-local BUTTON_Y_OFFSET = 100
-local SPAWN_BUTTON_Y = 475
-local NEW_GAME_BUTTON_Y = 375
-local TEMPLATE_SAVE_FILE_SLOT_OFFSET = 325
-local TEMPLATE_SAVE_FILE_Y_DIVIDER = 1.6
-local TEMPLATE_RESET_BUTTON_OFFSET = 10
-local TEMPLATE_LOAD_BUTTON_OFFSET = 60
-local TEMPLATE_ROTATION = math.rad(90)
-local TEMPLATE_SCALE_X = 1.5
-local TEMPLATE_SCALE_Y = 2
-local TEMPLATE_SMALL_SCALE = 0.55
-
-local DEFAULT_BUTTON_PATH = "assets/sprites/ui/button220x75.png"
-local STANBERRY_FONT_PATH = "assets/fonts/Stanberry.ttf"
-
-local MIDDLE_X = _G.WINDOW_WIDTH / 2
-local MIDDLE_Y = _G.WINDOW_HEIGHT / 2
-
-local SPAWN_BUTTON_X = BOX_CONSTANTS.AREA_WIDTH + (_G.WINDOW_WIDTH - BOX_CONSTANTS.AREA_WIDTH) / 2
+local CONSTANTS = require("code.game.ui.constants")
 
 return {
     game = {
         spawnButtonHitbox = {
-            spritePath = DEFAULT_BUTTON_PATH,
+            spritePath = CONSTANTS.DEFAULT_BUTTON_PATH,
             type = "sprite",
-            x = SPAWN_BUTTON_X,
-            y = SPAWN_BUTTON_Y,
+            x = CONSTANTS.SPAWN_BUTTON_X,
+            y = CONSTANTS.SPAWN_BUTTON_Y,
             color = RenderModule:createColor(255, 200, 0),
             zIndex = 1001
         },
@@ -37,20 +19,20 @@ return {
         spawnButtonCostLabel = {
             text = "Cost: (FREE)",
             type = "text",
-            x = SPAWN_BUTTON_X,
-            y = SPAWN_BUTTON_Y + 15,
+            x = CONSTANTS.SPAWN_BUTTON_X,
+            y = CONSTANTS.SPAWN_BUTTON_Y + 15,
             color = RenderModule:createColor(255, 255, 255),
-            font = love.graphics.newFont(STANBERRY_FONT_PATH, 20),
+            font = love.graphics.newFont(CONSTANTS.STANBERRY_FONT_PATH, 20),
             zIndex = 1002
         },
 
         spawnButtonLabel = {
             text = "Spawn Box!",
             type = "text",
-            x = SPAWN_BUTTON_X,
-            y = SPAWN_BUTTON_Y - 8,
+            x = CONSTANTS.SPAWN_BUTTON_X,
+            y = CONSTANTS.SPAWN_BUTTON_Y - 8,
             color = RenderModule:createColor(255, 255, 255),
-            font = love.graphics.newFont(STANBERRY_FONT_PATH, 28),
+            font = love.graphics.newFont(CONSTANTS.STANBERRY_FONT_PATH, 28),
             zIndex = 1002
         },
 
@@ -76,7 +58,7 @@ return {
             text = "Session Time: ",
             type = "text",
 
-            font = love.graphics.newFont(STANBERRY_FONT_PATH, 20),
+            font = love.graphics.newFont(CONSTANTS.STANBERRY_FONT_PATH, 20),
 
             anchorX = 0,
             anchorY = 0,
@@ -90,10 +72,8 @@ return {
         backToMenuButtonHitbox = {
             spritePath = "assets/sprites/ui/buttonmenu74x74.png",
             type = "sprite",
-            x = _G.WINDOW_WIDTH - 35,
-            y = 35,
-            anchorX = .5,
-            anchorY = .5,
+            x = CONSTANTS.SETTINGS_BUTTON_X - 55,
+            y = CONSTANTS.SETTINGS_BUTTON_OFFSET,
             scaleX = .6,
             scaleY = .6,
             color = RenderModule:createColor(117, 124, 136),
@@ -113,8 +93,8 @@ return {
         logo = {
             spritePath = "assets/sprites/ui/logo.png",
             type = "sprite",
-            x = MIDDLE_X,
-            y = NEW_GAME_BUTTON_Y - 225,
+            x = CONSTANTS.MIDDLE_X,
+            y = CONSTANTS.NEW_GAME_BUTTON_Y - 225,
 
             scaleX = .5,
             scaleY = .5,
@@ -124,8 +104,8 @@ return {
         logo2 = {
             spritePath = "assets/sprites/ui/logo2.png",
             type = "sprite",
-            x = MIDDLE_X,
-            y = NEW_GAME_BUTTON_Y - 100,
+            x = CONSTANTS.MIDDLE_X,
+            y = CONSTANTS.NEW_GAME_BUTTON_Y - 100,
 
             scaleX = .35,
             scaleY = .35,
@@ -134,10 +114,10 @@ return {
         },
 
         playGameButtonHitbox = {
-            spritePath = DEFAULT_BUTTON_PATH,
+            spritePath = CONSTANTS.DEFAULT_BUTTON_PATH,
             type = "sprite",
-            x = MIDDLE_X,
-            y = NEW_GAME_BUTTON_Y,
+            x = CONSTANTS.MIDDLE_X,
+            y = CONSTANTS.NEW_GAME_BUTTON_Y,
             color = RenderModule:createColor(151, 188, 98),
             zIndex = 1001
         },
@@ -145,18 +125,18 @@ return {
         playGameButtonLabel = {
             text = "Play Game",
             type = "text",
-            x = MIDDLE_X,
-            y = NEW_GAME_BUTTON_Y,
+            x = CONSTANTS.MIDDLE_X,
+            y = CONSTANTS.NEW_GAME_BUTTON_Y,
             color = RenderModule:createColor(255, 255, 255),
-            font = love.graphics.newFont(STANBERRY_FONT_PATH, 28),
+            font = love.graphics.newFont(CONSTANTS.STANBERRY_FONT_PATH, 28),
             zIndex = 1002
         },
 
         quitButtonHitbox = {
-            spritePath = DEFAULT_BUTTON_PATH,
+            spritePath = CONSTANTS.DEFAULT_BUTTON_PATH,
             type = "sprite",
-            x = MIDDLE_X,
-            y = NEW_GAME_BUTTON_Y + BUTTON_Y_OFFSET,
+            x = CONSTANTS.MIDDLE_X,
+            y = CONSTANTS.NEW_GAME_BUTTON_Y + CONSTANTS.BUTTON_Y_OFFSET,
             color = RenderModule:createColor(204, 49, 61),
             zIndex = 1001
         },
@@ -164,10 +144,10 @@ return {
         quitButtonLabel = {
             text = "Quit Game",
             type = "text",
-            x = MIDDLE_X,
-            y = NEW_GAME_BUTTON_Y + BUTTON_Y_OFFSET,
+            x = CONSTANTS.MIDDLE_X,
+            y = CONSTANTS.NEW_GAME_BUTTON_Y + CONSTANTS.BUTTON_Y_OFFSET,
             color = RenderModule:createColor(255, 255, 255),
-            font = love.graphics.newFont(STANBERRY_FONT_PATH, 28),
+            font = love.graphics.newFont(CONSTANTS.STANBERRY_FONT_PATH, 28),
             zIndex = 1002
         }
     },
@@ -182,10 +162,10 @@ return {
         },
 
         backToMenuButtonHitbox = {
-            spritePath = DEFAULT_BUTTON_PATH,
+            spritePath = CONSTANTS.DEFAULT_BUTTON_PATH,
             type = "sprite",
-            x = MIDDLE_X,
-            y = NEW_GAME_BUTTON_Y + BUTTON_Y_OFFSET,
+            x = CONSTANTS.MIDDLE_X,
+            y = CONSTANTS.NEW_GAME_BUTTON_Y + CONSTANTS.BUTTON_Y_OFFSET,
             color = RenderModule:createColor(204, 49, 61),
             zIndex = 1001
         },
@@ -193,21 +173,21 @@ return {
         backToMenuButtonLabel = {
             text = "Back",
             type = "text",
-            x = MIDDLE_X,
-            y = NEW_GAME_BUTTON_Y + BUTTON_Y_OFFSET,
+            x = CONSTANTS.MIDDLE_X,
+            y = CONSTANTS.NEW_GAME_BUTTON_Y + CONSTANTS.BUTTON_Y_OFFSET,
             color = RenderModule:createColor(255, 255, 255),
-            font = love.graphics.newFont(STANBERRY_FONT_PATH, 28),
+            font = love.graphics.newFont(CONSTANTS.STANBERRY_FONT_PATH, 28),
             zIndex = 1002
         },
 
         templateSaveFileBackground = {
-            spritePath = DEFAULT_BUTTON_PATH,
+            spritePath = CONSTANTS.DEFAULT_BUTTON_PATH,
             type = "sprite",
-            x = MIDDLE_X,
-            y = NEW_GAME_BUTTON_Y / TEMPLATE_SAVE_FILE_Y_DIVIDER,
-            rotation = TEMPLATE_ROTATION,
-            scaleX = TEMPLATE_SCALE_X,
-            scaleY = TEMPLATE_SCALE_Y,
+            x = CONSTANTS.MIDDLE_X,
+            y = CONSTANTS.NEW_GAME_BUTTON_Y / CONSTANTS.TEMPLATE_SAVE_FILE_Y_DIVIDER,
+            rotation = CONSTANTS.TEMPLATE_ROTATION,
+            scaleX = CONSTANTS.TEMPLATE_SCALE_X,
+            scaleY = CONSTANTS.TEMPLATE_SCALE_Y,
             color = RenderModule:createColor(42, 42, 42, 0.8),
             zIndex = 1001
         },
@@ -215,20 +195,20 @@ return {
         templateSaveFileLabel = {
             text = "Slot ",
             type = "text",
-            x = MIDDLE_X,
-            y = NEW_GAME_BUTTON_Y - TEMPLATE_SAVE_FILE_SLOT_OFFSET,
+            x = CONSTANTS.MIDDLE_X,
+            y = CONSTANTS.NEW_GAME_BUTTON_Y - CONSTANTS.TEMPLATE_SAVE_FILE_SLOT_OFFSET,
             color = RenderModule:createColor(255, 255, 255),
-            font = love.graphics.newFont(STANBERRY_FONT_PATH, 28),
+            font = love.graphics.newFont(CONSTANTS.STANBERRY_FONT_PATH, 28),
             zIndex = 1002
         },
 
         templateSaveFileLoadButtonHitbox = {
-            spritePath = DEFAULT_BUTTON_PATH,
+            spritePath = CONSTANTS.DEFAULT_BUTTON_PATH,
             type = "sprite",
-            x = MIDDLE_X,
-            y = NEW_GAME_BUTTON_Y - TEMPLATE_LOAD_BUTTON_OFFSET,
-            scaleX = TEMPLATE_SMALL_SCALE,
-            scaleY = TEMPLATE_SMALL_SCALE,
+            x = CONSTANTS.MIDDLE_X,
+            y = CONSTANTS.NEW_GAME_BUTTON_Y - CONSTANTS.TEMPLATE_LOAD_BUTTON_OFFSET,
+            scaleX = CONSTANTS.TEMPLATE_SMALL_SCALE,
+            scaleY = CONSTANTS.TEMPLATE_SMALL_SCALE,
             color = RenderModule:createColor(151, 188, 98),
             zIndex = 1002
         },
@@ -236,22 +216,22 @@ return {
         templateSaveFileLoadButtonLabel = {
             text = "Load File",
             type = "text",
-            x = MIDDLE_X,
-            y = NEW_GAME_BUTTON_Y - TEMPLATE_LOAD_BUTTON_OFFSET,
-            scaleX = TEMPLATE_SMALL_SCALE,
-            scaleY = TEMPLATE_SMALL_SCALE,
+            x = CONSTANTS.MIDDLE_X,
+            y = CONSTANTS.NEW_GAME_BUTTON_Y - CONSTANTS.TEMPLATE_LOAD_BUTTON_OFFSET,
+            scaleX = CONSTANTS.TEMPLATE_SMALL_SCALE,
+            scaleY = CONSTANTS.TEMPLATE_SMALL_SCALE,
             color = RenderModule:createColor(255, 255, 255),
-            font = love.graphics.newFont(STANBERRY_FONT_PATH, 28),
+            font = love.graphics.newFont(CONSTANTS.STANBERRY_FONT_PATH, 28),
             zIndex = 1003
         },
 
         templateSaveFileResetButtonHitbox = {
-            spritePath = DEFAULT_BUTTON_PATH,
+            spritePath = CONSTANTS.DEFAULT_BUTTON_PATH,
             type = "sprite",
-            x = MIDDLE_X,
-            y = NEW_GAME_BUTTON_Y - TEMPLATE_RESET_BUTTON_OFFSET,
-            scaleX = TEMPLATE_SMALL_SCALE,
-            scaleY = TEMPLATE_SMALL_SCALE,
+            x = CONSTANTS.MIDDLE_X,
+            y = CONSTANTS.NEW_GAME_BUTTON_Y - CONSTANTS.TEMPLATE_RESET_BUTTON_OFFSET,
+            scaleX = CONSTANTS.TEMPLATE_SMALL_SCALE,
+            scaleY = CONSTANTS.TEMPLATE_SMALL_SCALE,
             color = RenderModule:createColor(204, 49, 61),
             zIndex = 1002
         },
@@ -259,18 +239,18 @@ return {
         templateSaveFileResetButtonLabel = {
             text = "Reset File",
             type = "text",
-            x = MIDDLE_X,
-            y = NEW_GAME_BUTTON_Y - TEMPLATE_RESET_BUTTON_OFFSET,
-            scaleX = TEMPLATE_SMALL_SCALE,
-            scaleY = TEMPLATE_SMALL_SCALE,
+            x = CONSTANTS.MIDDLE_X,
+            y = CONSTANTS.NEW_GAME_BUTTON_Y - CONSTANTS.TEMPLATE_RESET_BUTTON_OFFSET,
+            scaleX = CONSTANTS.TEMPLATE_SMALL_SCALE,
+            scaleY = CONSTANTS.TEMPLATE_SMALL_SCALE,
             color = RenderModule:createColor(255, 255, 255),
-            font = love.graphics.newFont(STANBERRY_FONT_PATH, 28),
+            font = love.graphics.newFont(CONSTANTS.STANBERRY_FONT_PATH, 28),
             zIndex = 1003
         },
 
         templateSaveFileBoxPreview = {
-            x = MIDDLE_X,
-            y = NEW_GAME_BUTTON_Y / TEMPLATE_SAVE_FILE_Y_DIVIDER - 25,
+            x = CONSTANTS.MIDDLE_X,
+            y = CONSTANTS.NEW_GAME_BUTTON_Y / CONSTANTS.TEMPLATE_SAVE_FILE_Y_DIVIDER - 25,
             scaleX = 1,
             scaleY = 1,
             zIndex = 1004
@@ -280,8 +260,8 @@ return {
             spritePath = "assets/sprites/ui/buttonplus100x100.png",
             type = "sprite",
 
-            x = MIDDLE_X,
-            y = NEW_GAME_BUTTON_Y / TEMPLATE_SAVE_FILE_Y_DIVIDER - 25,
+            x = CONSTANTS.MIDDLE_X,
+            y = CONSTANTS.NEW_GAME_BUTTON_Y / CONSTANTS.TEMPLATE_SAVE_FILE_Y_DIVIDER - 25,
             scaleX = 1,
             scaleY = 1,
             zIndex = 1004
@@ -290,21 +270,36 @@ return {
         templateSaveHighestTier = {
             text = "Highest Tier: 1",
             type = "text",
-            x = MIDDLE_X,
-            y = NEW_GAME_BUTTON_Y - TEMPLATE_SAVE_FILE_SLOT_OFFSET + 40,
+            x = CONSTANTS.MIDDLE_X,
+            y = CONSTANTS.NEW_GAME_BUTTON_Y - CONSTANTS.TEMPLATE_SAVE_FILE_SLOT_OFFSET + 40,
             color = RenderModule:createColor(255, 255, 255),
-            font = love.graphics.newFont(STANBERRY_FONT_PATH, 20),
+            font = love.graphics.newFont(CONSTANTS.STANBERRY_FONT_PATH, 20),
             zIndex = 1002
         },
 
         templateSavePlaytime = {
             text = "0:00:00",
             type = "text",
-            x = MIDDLE_X,
-            y = NEW_GAME_BUTTON_Y - TEMPLATE_SAVE_FILE_SLOT_OFFSET + 65,
+            x = CONSTANTS.MIDDLE_X,
+            y = CONSTANTS.NEW_GAME_BUTTON_Y - CONSTANTS.TEMPLATE_SAVE_FILE_SLOT_OFFSET + 65,
             color = RenderModule:createColor(255, 255, 255),
-            font = love.graphics.newFont(STANBERRY_FONT_PATH, 22),
+            font = love.graphics.newFont(CONSTANTS.STANBERRY_FONT_PATH, 22),
             zIndex = 1002
+        }
+    },
+    shared = {
+        settingsButtonHitbox = {
+            spritePath = "assets/sprites/ui/buttoncog74x74.png",
+            type = "sprite",
+
+            x = CONSTANTS.SETTINGS_BUTTON_X,
+            y = CONSTANTS.SETTINGS_BUTTON_OFFSET,
+
+            scaleX = .6,
+            scaleY = .6,
+
+            color = RenderModule:createColor(117, 124, 136),
+            zIndex = 1004
         }
     }
 }
