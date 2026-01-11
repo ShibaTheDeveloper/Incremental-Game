@@ -113,14 +113,16 @@ local function setupSpawnButton(self)
 end
 
 function Module:update()
+    MusicHandlerModule:update()
+
     if sessionPlaytimeLabel then
         sessionPlaytimeLabel.text = "Session Time: " .. extra.formatTime(SaveFilesModule.loadedFile.playtime - playtimeAtSessionStart)
     end
 end
 
 function Module:init()
+    MusicHandlerModule:stopTrack(MusicHandlerModule.playingTrack)
     UISharedFunctions:setupSettingsButton(self)
-    MusicHandlerModule:playTrack("game")
 
     setupSessionPlaytimeLabel(self)
     setupBackToMenuButton(self)

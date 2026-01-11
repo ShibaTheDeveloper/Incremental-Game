@@ -6,23 +6,55 @@ local extra = require("code.engine.extra")
 local TrackData = require("code.data.tracks")
 
 local Module = {}
-Module.playingTrack = nil
+
+Module.gameplayTracks = {}
 Module.loadedTracks = {}
 
+Module.playingTrack = nil
+
+local function pickRandomGameplayTrack(exclude)
+    local list = Module.gameplayTracks
+    if #list == 0 then return nil end
+    if #list == 1 then return list[1] end
+
+    local pick
+    repeat
+        pick = list[math.random(#list)]
+    until pick ~= exclude
+
+    return pick
+end
+
+function Module:update()
+    local name = self.playingTrack
+    if name then
+        local playingTrack = Module.loadedTracks[name]
+        if playingTrack then
+            if playingTrack.soundObject.source:isPlaying() then return end
+            if not playingTrack.isGameplayTrack then return end
+        end
+    end
+
+    self:playRandomGameplayTrack(name)
+end
+
 function Module.init()
-    for index, track in pairs(TrackData) do
+    for name, track in pairs(TrackData) do
         local data = extra.cloneTable(track)
 
         local soundObject = SoundModule:createSound({
             soundPath = data.trackPath,
-            volume = data.volume,
-
+            volume = data.volume or 1,
             type = "track",
-            loop = true
+            loop = false
         })
 
         data.soundObject = soundObject
-        Module.loadedTracks[index] = data
+        Module.loadedTracks[name] = data
+
+        if data.isGameplayTrack then
+            table.insert(Module.gameplayTracks, name)
+        end
     end
 end
 
@@ -54,6 +86,11 @@ function Module:stopTrack(name)
 
     track.soundObject:stop()
     self.playingTrack = nil
+end
+
+function Module:playRandomGameplayTrack(exclude)
+    local track = pickRandomGameplayTrack(exclude)
+    self:playTrack(track)
 end
 
 function Module:getLoadedTracks()
