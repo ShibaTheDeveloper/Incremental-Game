@@ -3,7 +3,6 @@
 local ScreenTransitionModule = require("code.game.vfx.screenTransition")
 local MusicHandlerModule = require("code.game.musicHandler")
 
-local UITextBoxObjectModule = require("code.game.ui.objects.textBox")
 local UIButtonObjectModule = require("code.game.ui.objects.button")
 local UISceneHandlerModule = require("code.game.ui.sceneHandler")
 local UISharedFunctions = require("code.game.ui.shared")
@@ -114,30 +113,6 @@ function Module:update()
     end
 end
 
-local function textBox(self)
-    local textBoxHitbox = RenderModule:createElement(SceneData.textBoxHitbox)
-    local textBoxField = RenderModule:createElement(SceneData.textBoxField)
-
-    table.insert(self._elements, textBoxHitbox)
-    table.insert(self._elements, textBoxField)
-    print(SceneData.textBoxField.text)
-    local textBox = UITextBoxObjectModule:createTextBox({
-        elements = {
-            textBoxHitbox,
-            textBoxField
-        },
-
-        hitboxElement = textBoxHitbox,
-        fieldElement = textBoxField,
-
-        onChange = nil,
-
-        placeholderText = SceneData.textBoxField.text,
-    })
-
-    table.insert(self._objects, textBox)
-end
-
 function Module:init()
     UISharedFunctions:setupSettingsButton(self)
     MusicHandlerModule:playTrack("mainMenu")
@@ -146,7 +121,6 @@ function Module:init()
     setupQuitButton(self)
     setupBackground(self)
     setupLogo(self)
-    textBox(self)
 end
 
 return Module
