@@ -120,7 +120,7 @@ function Module:update()
     end
 end
 
-function Module:init()
+function Module:init(save)
     MusicHandlerModule:stopTrack(MusicHandlerModule.playingTrack)
     UISharedFunctions:setupSettingsButton(self)
 
