@@ -2,6 +2,8 @@
 
 local ScreenFlashModule = require("code.game.vfx.screenFlash")
 local BoxesObjectModule = require("code.game.box.object")
+
+local SaveFilesModule = require("code.engine.saveFiles")
 local SoundModule = require("code.engine.sound")
 local extra = require("code.engine.extra")
 
@@ -89,6 +91,8 @@ function Module:mergeUpdate(deltaTime)
             local newBox = BoxesObjectModule:createBox(newBoxData)
 
             if newBox then
+                SaveFilesModule.loadedFile.credits = SaveFilesModule.loadedFile.credits + newBox.mergeReward
+
                 newBox.element.x, newBox.element.y = merge.middleX, merge.middleY
 
                 newBox.velocityX = (merge.boxA.velocityX + merge.boxB.velocityX) * CONSTANTS.ELASTICITY

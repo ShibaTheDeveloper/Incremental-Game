@@ -103,6 +103,8 @@ function Module:createBox(data)
 
         mergeSoundData = data.mergeSoundData or {soundPath = "assets/sounds/merge/default.wav"},
 
+        mergeReward = data.mergeReward or 50,
+
         weight = data.weight,
         tier = data.tier,
 

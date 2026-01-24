@@ -32,6 +32,8 @@ return {
         quote = "Gerald.",
         name = "Gerald",
 
+        mergeReward = 0,
+
         weight = 40,
         scale = .7,
         tier = 1,
@@ -42,6 +44,8 @@ return {
         description = "Jimbo is constantly shocked at everything, constantly horrified of what'll happen next.",
         quote = "WHAT??",
         name = "Jimbo",
+
+        mergeReward = 5,
 
         weight = 50,
         scale = .8,
@@ -54,6 +58,8 @@ return {
         quote = "And that's how I'll take over the world!",
         name = "Glumbo",
 
+        mergeReward = 10,
+
         weight = 55,
         scale = .9,
         tier = 3,
@@ -65,6 +71,8 @@ return {
         quote = "Ermm.. actually..! ☝️🤓",
         name = "Jeremy",
 
+        mergeReward = 15,
+
         weight = 120,
         scale = 1,
         tier = 4,
@@ -75,6 +83,8 @@ return {
         description = "An overweight box that most definitely ate that cookie.",
         quote = "I didn't eat that cookie!",
         name = "Muncher",
+
+        mergeReward = 50,
 
         screenFlashFadeDuration = 1.2,
         flashScreen = true,
@@ -92,6 +102,8 @@ return {
         quote = "...",
         name = "Dylan",
 
+        mergeReward = 55,
+
         weight = 255,
         scale = 1.2,
         tier = 6,
@@ -102,6 +114,8 @@ return {
         description = "A really enthusiastic box, loves bothering people. Annoying.",
         quote = "HEY!!!",
         name = "Carlos",
+
+        mergeReward = 60,
 
         weight = 270,
         scale = 1.3,
@@ -114,6 +128,8 @@ return {
         quote = "Blehhhh!",
         name = "Goobster Goobington III",
 
+        mergeReward = 65,
+
         weight = 300,
         scale = 1.4,
         tier = 8,
@@ -125,6 +141,8 @@ return {
         quote = "YASS QWEEN 💅💅 WE'RE GETTING SOME GEMINI ENERGY! SLAYY! 💅💅💅",
         name = "Angel",
 
+        mergeReward = 70,
+
         weight = 345,
         scale = 1.5,
         tier = 9,
@@ -135,6 +153,8 @@ return {
         description = [[An extremely cool cube, who apparantly has terrible parents. Who in their right mind would name their child "Frigid Wendyhot"? Also, who shaved off his other eyebrow?]],
         quote = "Sup, twin?",
         name = "Frigid Wendyhot",
+
+        mergeReward = 100,
 
         screenFlashFadeDuration = 1.2,
         flashScreen = true,
@@ -152,6 +172,8 @@ return {
         quote = "Whuh? wha-?",
         name = "Dizzy",
 
+        mergeReward = 110,
+
         weight = 430,
         scale = 1.66,
         tier = 11,
@@ -162,6 +184,8 @@ return {
         description = "A granite-man transformed into a box. He's the creator of the faces you see on the boxes.",
         quote = "ROCK NOISES!!!",
         name = "Gochged",
+
+        mergeReward = 120,
 
         weight = 600,
         scale = .85,
@@ -174,6 +198,8 @@ return {
         quote = "Big back, big back! Big back, big back! Yeah, my back is loaded up with snacks and different foods!",
         name = "Mt. Box",
 
+        mergeReward = 130,
+
         weight = 500,
         scale = 1.8,
         tier = 13,
@@ -184,6 +210,8 @@ return {
         description = "This box is so massive that it became red-hot from the outside! Being able to fuse so much matter into one point is inhuman.",
         quote = "RAAAAAAAAAHHH!!!",
         name = "Unstable",
+
+        mergeReward = 140,
 
         reflectionPath = "assets/sprites/reflections/box14.png",
         reflective = true,
@@ -198,6 +226,8 @@ return {
         description = "A box that has been enlightened with the knowledge of everything, even the fact that it's in a game! It has become mute and un-reactive, as it is trying to process everything at once.",
         quote = "...",
         name = "Transcended",
+
+        mergeReward = 222,
 
         --screenFlashColor = RenderModule:createColor(255, 255, 255, 1),
         --screenFlashFadeDuration = 2.25,
@@ -221,6 +251,8 @@ return {
         quote = "ZXZlcnl0aGluZw==",
         name = "Omnibox",
 
+        mergeReward = 333,
+
         --screenFlashColor = RenderModule:createColor(255, 255, 255, 1),
         --screenFlashFadeDuration = 2.25,
         --flashScreen = true,
@@ -243,6 +275,8 @@ return {
         quote = "MUAHAHAHAHA!",
         name = "Devoided",
 
+        mergeReward = 444,
+
         --screenFlashColor = RenderModule:createColor(43, 43, 255, 1),
         --screenFlashFadeDuration = 2.25,
         --flashScreen = true,
@@ -262,6 +296,8 @@ return {
         description = "Quite a playful box that likes to mess around with it's shapeshifting ability. Will occasionally shapeshift into the lower-tier boxes while still being counted as the same tier.",
         quote = "Hide and seek! will you find me?",
         name = "Box o' Matter",
+
+        mergeReward = 555,
 
         --screenFlashFadeDuration = 2.25,
         --flashScreen = true,
