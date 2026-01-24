@@ -26,7 +26,9 @@ Module.name = "game"
 local SceneData = UIData[Module.name]
 
 local playtimeAtSessionStart = 0
+
 local sessionPlaytimeLabel = nil
+local creditsLabel = nil
 
 function Module:clean()
     for _, element in pairs(self._elements) do
@@ -52,6 +54,11 @@ local function setupBackgrounds(self)
 
     table.insert(self._elements, playAreaBackground)
     table.insert(self._elements, sidebarBackground)
+end
+
+local function setupCreditsLabel(self)
+    creditsLabel = RenderModule:createElement(SceneData.creditsLabel)
+    table.insert(self._elements, creditsLabel)
 end
 
 local function setupSessionPlaytimeLabel(self)
@@ -118,14 +125,19 @@ function Module:update()
     if sessionPlaytimeLabel then
         sessionPlaytimeLabel.text = "Session Time: " .. extra.formatTime(SaveFilesModule.loadedFile.playtime - playtimeAtSessionStart)
     end
+
+    if creditsLabel then
+        creditsLabel.text = "Credits: " .. SaveFilesModule.loadedFile.credits
+    end
 end
 
-function Module:init(save)
+function Module:init()
     MusicHandlerModule:stopTrack(MusicHandlerModule.playingTrack)
     UISharedFunctions:setupSettingsButton(self)
 
     setupSessionPlaytimeLabel(self)
     setupBackToMenuButton(self)
+    setupCreditsLabel(self)
     setupBackgrounds(self)
     setupSpawnButton(self)
 end

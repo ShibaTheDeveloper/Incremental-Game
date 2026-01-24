@@ -18,7 +18,7 @@ local DEFAULT_FILE_DATA = {
 
     playtime = 0,
 
-    money = 0,
+    credits = 0,
     boxes = {}
 }
 

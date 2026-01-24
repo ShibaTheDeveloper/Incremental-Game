@@ -69,6 +69,23 @@ return {
             zIndex = 1003,
         },
 
+        creditsLabel = {
+            text = "Credits:",
+            type = "text",
+
+            font = love.graphics.newFont(CONSTANTS.STANBERRY_FONT_PATH, 20),
+
+            anchorX = 0,
+            anchorY = 0,
+
+            x = 5,
+            y = 5 + 20,
+
+            color = RenderModule:createColor(255, 200, 0),
+
+            zIndex = 1003,
+        },
+
         backToMenuButtonHitbox = {
             spritePath = "assets/sprites/ui/buttonmenu74x74.png",
             type = "sprite",
